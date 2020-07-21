@@ -7,6 +7,7 @@ public class MainConsole {
         System.out.println(f);
         System.out.println(f);
         System.out.println(f);
+        System.out.println(f);
 
     }
 }
