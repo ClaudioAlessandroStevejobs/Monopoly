@@ -5,9 +5,6 @@ public class MainConsole {
         Field f = new Field();
 
         System.out.println(f);
-        System.out.println(f);
-        System.out.println(f);
-        System.out.println(f);
 
     }
 }
