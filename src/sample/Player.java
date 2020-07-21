@@ -3,12 +3,50 @@ package sample;
 import java.util.ArrayList;
 
 public class Player {
-    enum Pawn{FUNGO}
-    Pawn pawn;
-    ArrayList<String> properties = new ArrayList<String>();
 
-    public Player(Pawn pawn, ArrayList<String> properties){
-        int bill = 100000;
+    public enum Pawn{ARANCINO, ELEFANTE, CAVALLINO, CANNOLO}
+    private Pawn pawn;
+    private ArrayList<String> properties;
+    private int bill = 2000;
+    private short position = 0;
+
+    public void movement(int increasePosition) {
+        this.position += increasePosition;
+    }
+
+    public boolean checkProprieties(String boxName){
+        if (properties.contains(boxName)){
+            return true;
+        }
+        else return false;
+    }
+
+    public short getPosition() {
+        return position;
+    }
+
+    public int getBill() {
+        return bill;
+    }
+
+    public void payment(int tax) {
+        this.bill -= tax;
+    }
+
+    public void setPawn(Pawn pawn) {
+        this.pawn = pawn;
+    }
+    public void addProperty(String property) {
+        properties.add(property);
+    }
+    public ArrayList<String> getProperties() {
+        return properties;
+    }
+    public Pawn getPawn() {
+        return pawn;
+    }
+
+    public Player(Pawn pawn){
         this.pawn = pawn;
         this.properties = properties;
     }
