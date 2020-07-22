@@ -29,8 +29,14 @@ public class Player {
         return bill;
     }
 
-    public void payment(int tax) {
-        this.bill -= tax;
+    public boolean payment(int tax) {
+        if (this.bill - tax < 0) {
+            return false;
+        }
+        else {
+            this.bill -= tax;
+            return true;
+        }
     }
 
     public void setPawn(Pawn pawn) {

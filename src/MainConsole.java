@@ -2,6 +2,7 @@ import sample.Box;
 import sample.Monopoly;
 import sample.Player;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class MainConsole {
@@ -28,7 +29,43 @@ public class MainConsole {
                                         player.addProperty(m.field[player.getPosition()].getName());
                                         break;
                                     case 'n' :
-                                        System.out.println("va all'asta");
+
+                                        //arraylist di gente esclusa dall'asta
+                                        ArrayList<Player> excludedPlayers = new ArrayList<Player>();
+                                        excludedPlayers.add(player);
+
+                                        //prezzo iniziale
+                                        int price = m.field[player.getPosition()].getPrice();
+
+                                        do {
+                                            for (Player auctionPlayer : players) {
+                                                if (!(excludedPlayers.size() == players.length - 1)) {
+                                                    if (!excludedPlayers.contains(auctionPlayer)) {
+                                                        int raise;
+                                                        //controllo se puoi puntare già di base o no
+                                                        if (!auctionPlayer.payment(m.field[player.getPosition()].getPrice())) {
+                                                            excludedPlayers.add(auctionPlayer);
+                                                            continue;
+                                                        }
+                                                        do {
+                                                            System.out.println("prezzo attuale: "+price+"\nrilancia (oppure scrivi 0 per lasciare)");
+                                                            raise = input.nextInt();
+                                                            if ((raise!=0 && raise<=price) && auctionPlayer.payment(m.field[player.getPosition()].getPrice())) System.out.println("errore");
+                                                        }while((raise!=0 && raise<=price) && auctionPlayer.payment(m.field[player.getPosition()].getPrice()));
+                                                        if (raise == 0) {
+                                                            excludedPlayers.add(auctionPlayer);
+                                                            continue;
+                                                        }
+                                                        price = raise;
+                                                    }
+                                                } else {
+                                                    player.payment(m.field[player.getPosition()].getPrice());
+                                                    auctionPlayer.addProperty(m.field[player.getPosition()].getName());
+                                                }
+                                            }
+
+                                        }while (m.getWin());
+
                                         break;
                                 }
                             }

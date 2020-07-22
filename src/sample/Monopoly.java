@@ -64,6 +64,9 @@ public class Monopoly {
        return random.nextInt(12) + 1;
     }
 
+    public
+
+
     public boolean getWin(){
         return true;
     }
