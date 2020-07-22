@@ -9,6 +9,35 @@ public class Box {
     private short houses;
     private Type type;
     private Color color;
+    private boolean buildable;
+
+    // Costruttore per le proprietà
+    public Box(Type type, Color color, int price,
+               int mortgageCost, String name, short houses){
+        this.type = type;
+        this.color = color;
+        this.price = price;
+        this.mortgageCost = mortgageCost;
+        this.name = name;
+        this.houses = houses;
+        this.buildable = false;
+    }
+    // Costruttore angoli
+    public Box(Type type){
+        this.type = type;
+    }
+    // Costruttore tasse
+    public Box(Type type, String name){
+        this.type = type;
+        this.name = name;
+    }
+    // Costruttore stazioni
+    public Box(Type type, int price, int mortgageCost, String name){
+        this.type = type;
+        this.price = price;
+        this.mortgageCost = mortgageCost;
+        this.name = name;
+    }
 
     public void setPrice(int price) {
         this.price = price;
@@ -46,31 +75,9 @@ public class Box {
     public Type getType() {
         return type;
     }
-
-    public Box(Type type, Color color, int price,
-               int mortgageCost, String name, short houses){
-        this.type = type;
-        this.color = color;
-        this.price = price;
-        this.mortgageCost = mortgageCost;
-        this.name = name;
-        this.houses = houses;
+    public void setBuildable(boolean buildable) {
+        this.buildable = buildable;
     }
-
-    public Box(Type type){
-        this.type = type;
-    }
-
-    public Box(Type type, String name){
-        this.type = type;
-        this.name = name;
-    }
-
-    public Box(Type type, int price, int mortgageCost, String name){
-        this.type = type;
-        this.price = price;
-        this.mortgageCost = mortgageCost;
-        this.name = name;
-    }
+    public boolean getBuildable() {return buildable;}
 
 }
