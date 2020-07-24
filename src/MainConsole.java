@@ -2,6 +2,7 @@ import sample.Box;
 import sample.Monopoly;
 import sample.Player;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -86,6 +87,8 @@ public class MainConsole {
                             player.payment(-m.getTaxFund());
                             System.out.println("Sei passato dal parcheggio, ritira " + m.getTaxFund() + " euro");
                             m.setTaxFund(0);
+                        case CHANCE:
+                            System.out.println(m.chance(player));
                         case TAX:
                             if (m.field[player.getPosition()].getName().equals("Patrimonial tax")){
                                 player.payment(200);
@@ -187,6 +190,48 @@ public class MainConsole {
                         System.out.println("Sono usciti due " + dice1 + ", sei uscito di prigione");
                     }
                 }
+
+                if(m.comboBuildableColors(player.getProperties()).size()>0) {
+                    char build;
+                    do {
+                        System.out.println("Vuoi costruire?");
+                        build = input.next().charAt(0);
+                        if (build!='s' && build!='n') System.out.println("Errore, dai una risposta corretta!");
+                    }while(build!='s' && build!='n');
+
+                    if (build=='n') {
+                        continue;
+                    }
+
+                    System.out.println("Elenco zone ");
+                    ArrayList<String> propertiesPerColor = new ArrayList<>();
+                    for (Box.Color c: m.comboBuildableColors(player.getProperties())) {
+                        System.out.println(c + "ZONE");
+                    }
+                    Box.Color[] colorsArray = m.comboBuildableColors(player.getProperties()).toArray(new Box.Color[0]);
+
+                    for (String s: m.getNamesFromColor(colorechesceglitu)) {
+                        System.out.println(s);
+                    }
+
+
+
+                    //input
+                }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             }
         }while (m.getWin());
     }

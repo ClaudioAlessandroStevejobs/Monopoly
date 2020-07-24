@@ -12,8 +12,7 @@ public class Box {
     private boolean buildable;
 
     // Costruttore per le proprietà
-    public Box(Type type, Color color, int price,
-               int mortgageCost, String name, short houses){
+    public Box(Type type, Color color, int price, int mortgageCost, String name, short houses) {
         this.type = type;
         this.color = color;
         this.price = price;
@@ -21,6 +20,7 @@ public class Box {
         this.name = name;
         this.houses = houses;
         this.buildable = false;
+
     }
     // Costruttore angoli
     public Box(Type type){
@@ -80,6 +80,31 @@ public class Box {
     }
     public boolean getBuildable() {return buildable;}
 
+    public int houseCost() {
+        if (color.equals(Color.BROWN) || color.equals(Color.LIGHT_BLUE)) {
+            return 50;
+        }
+        if (color.equals(Color.PURPLE) || color.equals(Color.ORANGE)) {
+            return 100;
+        }
+        if (color.equals(Color.RED) || color.equals(Color.YELLOW)) {
+            return 150;
+        }
+        if (color.equals(Color.GREEN) || color.equals(Color.BLUE)) {
+            return 200;
+        }
+        return 0;
+    }
+    /* metodo per comprare una o più case nella proprietà,
+    vuole in input il numero di case da voler comprare ed il fondo del giocatore,
+    ritorna il prezzo da pagare SOLO quando il pagamento è fattibile, quindi andato a buon fine. */
+    public int housesPurchase(short housesNumber, int playerBill) {
+        if (houseCost() * housesNumber <= playerBill) {
+            houses = housesNumber;
+            return houseCost() * housesNumber;
+        }
+        return 0;
+    }
 
 
 }

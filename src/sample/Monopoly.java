@@ -20,7 +20,7 @@ public class Monopoly {
         return taxFund;
     }
 
-    public Monopoly(){
+    public Monopoly() {
         initialize();
     }
 
@@ -84,7 +84,31 @@ public class Monopoly {
         return null;
     }
 
+    public ArrayList<String> getNamesFromColor(Box.Color color){
+        ArrayList<String> propertyNames = new ArrayList<>();
+        for (Box b: field) {
+            if (b.getColor().equals(color)) {
+                propertyNames.add(b.getName());
+            }
+        }
+        return propertyNames;
+    }
+
     public void setBuildable(ArrayList<String> properties){
+
+        ArrayList<Box.Color> comboColors = comboBuildableColors(properties);
+
+        // Attivazione buildable per le combo
+        for (Box.Color c: comboColors) {
+            for (Box b: field) {
+                if(b.getColor().equals(c)){
+                    b.setBuildable(true);
+                }
+            }
+        }
+    }
+
+    public ArrayList<Box.Color> comboBuildableColors(ArrayList<String> properties) {
 
         HashMap<Box.Color,Integer> colors = new HashMap<>();
 
@@ -99,25 +123,17 @@ public class Monopoly {
         }
 
         ArrayList<Box.Color> comboColors = new ArrayList<>();
-
         // Controllo delle combo per i colori del giocatore
         for (Map.Entry c: colors.entrySet()) {
             if(c.getValue().equals(2) && (c.getKey().equals(Box.Color.BLUE)
-            || c.getKey().equals(Box.Color.BROWN))){
+                    || c.getKey().equals(Box.Color.BROWN))){
                 comboColors.add((Box.Color) c.getKey());
             }
             else if(c.getValue().equals(3)){
                 comboColors.add((Box.Color) c.getKey());
             }
         }
-        // Attivazione buildable per le combo
-        for (Box.Color c: comboColors) {
-            for (Box b: field) {
-                if(b.getColor().equals(c)){
-                    b.setBuildable(true);
-                }
-            }
-        }
+        return comboColors;
     }
 
     public boolean getWin(){
@@ -126,13 +142,18 @@ public class Monopoly {
 
     public String chance(Player player){
         ArrayList<Integer> discardedChance = new ArrayList<>();
+
         int chanceIndex;
 
         do {
             chanceIndex = random.nextInt(12);
-        }while (!discardedChance.contains(chanceIndex));
-
-        discardedChance.add(chanceIndex);
+            if (!discardedChance.contains(chanceIndex)) {
+                discardedChance.add(chanceIndex);
+            }
+            if (discardedChance.size() == 12) {
+                discardedChance.clear();
+            }
+        }while (discardedChance.contains(chanceIndex));
 
         switch (chanceIndex){
             case 0:
