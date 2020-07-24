@@ -125,7 +125,15 @@ public class Monopoly {
     }
 
     public String chance(Player player){
-        int chanceIndex = random.nextInt(3);
+        ArrayList<Integer> discardedChance = new ArrayList<>();
+        int chanceIndex;
+
+        do {
+            chanceIndex = random.nextInt(12);
+        }while (!discardedChance.contains(chanceIndex));
+
+        discardedChance.add(chanceIndex);
+
         switch (chanceIndex){
             case 0:
                 player.payment(-60);
@@ -139,7 +147,70 @@ public class Monopoly {
                 else {return "Non hai i soldi";}
             case 2:
                 player.setPosition((short) 0);
-                return "Torni al via";
+                return "Vai avanti fino al via";
+            case 3:
+                goToPrison(player);
+                return "senza passare dal via";
+            case 4:
+                player.movement(-3);
+                return "Fai tre passi indietro";
+            case 5:
+                player.payment(50);
+                return "Versi 50 euro in beneficienza";
+            case 6:
+                player.payment(40);
+                taxFund += 40;
+                return "40 euro di multa per aver guidato senza patente";
+            case 7:
+                player.payment(375);
+                return "Matrimonio in famiglia:spese impreviste 375 euro";
+            case 8:
+                if (player.getPrisoner()){
+                    player.setPrisoner(false);
+                    return "Uscite gratis di prigione, \n" +
+                        "se non ci siete potete conservare questo cartoncino sino al momento di servirvene";
+                }
+                else {
+                    player.setCanEscapeFromPrison(true);
+                    return "Se andrai in prigione potrai uscire col cartellino";
+                }
+            case 9:
+                player.payment(-400);
+                return "Vinci 400 al gratta e vinci";
+            case 10:
+                player.payment(-130);
+                return "E' il tuo compleanno, ti regalano 130 euro";
+            case 11:
+                player.setPosition((short) 1);
+                return "Torni alla prima posizione";
+            case 12:
+                player.payment(500);
+                taxFund += 500;
+                return "Paghi 500 euro di debiti alla banca";
+            case 13:
+            case 14:
+            case 15:
+            case 16:
+            case 17:
+            case 18:
+            case 19:
+            case 20:
+            case 21:
+            case 22:
+            case 23:
+            case 24:
+            case 25:
+            case 26:
+            case 27:
+            case 28:
+            case 29:
+            case 30:
+            case 31:
+            case 32:
+            case 33:
+            case 34:
+            case 35:
+
         }
         return null;
     }

@@ -10,10 +10,12 @@ public class Player {
     private int bill = 2000;
     private short position = 0;
     private boolean prisoner;
+    private boolean canEscapeFromPrison;
 
     public Player(Pawn pawn){
         this.pawn = pawn;
         this.prisoner = false;
+        this.canEscapeFromPrison = false;
     }
 
     public void movement(int increasePosition) {
@@ -33,19 +35,6 @@ public class Player {
         else return false;
     }
 
-    public void setPosition(short position) {
-        this.position = position;
-    }
-
-    public short getPosition() {
-        return position;
-    }
-
-
-    public int getBill() {
-        return bill;
-    }
-
     public boolean payment(int tax) {
         if (this.bill - tax < 0) {
             return false;
@@ -56,11 +45,21 @@ public class Player {
         }
     }
 
-    public void setPawn(Pawn pawn) {
-        this.pawn = pawn;
-    }
     public void addProperty(String property) {
         properties.add(property);
+    }
+
+    public void setPosition(short position) {
+        this.position = position;
+    }
+    public short getPosition() {
+        return position;
+    }
+    public int getBill() {
+        return bill;
+    }
+    public void setPawn(Pawn pawn) {
+        this.pawn = pawn;
     }
     public ArrayList<String> getProperties() {
         return properties;
@@ -68,14 +67,16 @@ public class Player {
     public Pawn getPawn() {
         return pawn;
     }
-
     public void setPrisoner(boolean prisoner) {
         this.prisoner = prisoner;
     }
-
     public boolean getPrisoner(){
         return prisoner;
     }
-
-
+    public void setCanEscapeFromPrison(boolean canEscapeFromPrison) {
+        this.canEscapeFromPrison = canEscapeFromPrison;
+    }
+    public boolean getCanEscapeFromPrison(){
+        return canEscapeFromPrison;
+    }
 }
