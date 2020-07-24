@@ -4,13 +4,16 @@ import java.util.ArrayList;
 
 public class Player {
 
-    public enum Pawn{ARANCINO, ELEFANTE, CAVALLINO, CANNOLO}
+    public enum Pawn{ARANCINO, ELEFANTE, CAVALLINO, CANNOLO, CASSATA, VULCANO}
     private Pawn pawn;
     private ArrayList<String> properties;
     private int bill = 2000;
     private short position = 0;
     private boolean prisoner;
     private boolean canEscapeFromPrison;
+
+    public Player(){
+    }
 
     public Player(Pawn pawn){
         this.pawn = pawn;
@@ -61,12 +64,25 @@ public class Player {
     public void setPawn(Pawn pawn) {
         this.pawn = pawn;
     }
-    public ArrayList<String> getProperties() {
-        return properties;
-    }
     public Pawn getPawn() {
         return pawn;
     }
+    public ArrayList<String> getProperties() {
+        return properties;
+    }
+    public ArrayList<Pawn> getPawnArray() {
+        ArrayList<Pawn> pawns = new ArrayList<Pawn>() {{
+                add(Pawn.ELEFANTE);
+                add(Pawn.CANNOLO);
+                add(Pawn.ARANCINO);
+                add(Pawn.CAVALLINO);
+                add(Pawn.VULCANO);
+                add(Pawn.CASSATA);
+            }};
+        return pawns;
+    }
+
+
     public void setPrisoner(boolean prisoner) {
         this.prisoner = prisoner;
     }

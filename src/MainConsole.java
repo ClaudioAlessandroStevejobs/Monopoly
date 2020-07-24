@@ -3,20 +3,53 @@ import sample.Monopoly;
 import sample.Player;
 
 import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Scanner;
+import java.util.*;
 
 public class MainConsole {
-    public static void main(String[] args) {
-        Monopoly m = new Monopoly();
-        Player[] players = new Player[3];
+    public static void main(String[] args) throws InterruptedException {
         Scanner input = new Scanner(System.in);
+        Monopoly m = new Monopoly();
 
-        //p1 = m.play(p1);
+        /* SET GIOCATORI, RICORDA TRY CATCH */
+        int playerNum;
+        do {
+            System.out.println("Quanti giocatori partecipano? (2-6)");
+            playerNum = input.nextInt();
+            if (playerNum <= 1 || playerNum > 6) {
+                System.out.println("Errore!");
+            }
+        }while(playerNum <= 1 || playerNum > 6);
+        Player[] players = new Player[playerNum];
+        players[0] = new Player();
+
+        /* SET PEDINE, RICORDA TRY CATCH */
+        ArrayList<Player.Pawn> availablePawns = players[0].getPawnArray();
+        for (int k = 0; k<playerNum; k++) {
+            System.out.println("Giocatore "+(k+1)+":\nScegli la pedina tra queste:");
+            for (int j = 0; j < availablePawns.size(); j++) {
+                System.out.println((j+1)+" - "+ availablePawns.get(j));
+            }
+            int choice;
+            choice = input.nextInt();
+            players[k]= new Player(availablePawns.get(choice-1));
+            System.out.println("Il giocatore "+(k+1)+" ha scelto "+availablePawns.get(choice-1)+"!");
+            availablePawns.remove(choice-1);
+        }
+
+        //MESCOLAMENTO GIOCATORI
+        players = m.shuffle(players);
+
         do {
             for (Player player : players) {
+                System.out.println("E' il turno di "+player.getPawn()+":\nLa tua posizione attuale è "+player.getPosition());
+                Thread.sleep(1000);
                 int dice1 = m.rollDice();
                 int dice2 = m.rollDice();
+                System.out.println("Tiri il dado!");
+                Thread.sleep(2000);
+                System.out.println("Sono usciti "+dice1+" e "+dice2);
+                //FARE LA ROBA SE E' DOPPIO
+                System.out.println("Ti muovi di "+(dice1+dice2)+" caselle");
                 if (!player.getPrisoner()) {
                     player.movement(dice1+ dice2);
                     Box.Type type = m.field[player.getPosition()].getType();
@@ -210,9 +243,9 @@ public class MainConsole {
                     }
                     Box.Color[] colorsArray = m.comboBuildableColors(player.getProperties()).toArray(new Box.Color[0]);
 
-                    for (String s: m.getNamesFromColor(colorechesceglitu)) {
+                    /*for (String s: m.getNamesFromColor(colorechesceglitu)) {
                         System.out.println(s);
-                    }
+                    }*/
 
 
 

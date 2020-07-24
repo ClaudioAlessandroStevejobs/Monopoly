@@ -12,13 +12,12 @@ public class Box {
     private boolean buildable;
 
     // Costruttore per le proprietà
-    public Box(Type type, Color color, int price, int mortgageCost, String name, short houses) {
+    public Box(Type type, Color color, int price, String name) {
         this.type = type;
         this.color = color;
         this.price = price;
-        this.mortgageCost = mortgageCost;
+        this.mortgageCost = price/2;
         this.name = name;
-        this.houses = houses;
         this.buildable = false;
 
     }
@@ -32,10 +31,10 @@ public class Box {
         this.name = name;
     }
     // Costruttore stazioni
-    public Box(Type type, int price, int mortgageCost, String name){
+    public Box(Type type, int price, String name){
         this.type = type;
         this.price = price;
-        this.mortgageCost = mortgageCost;
+        this.mortgageCost = price/2;
         this.name = name;
     }
 
