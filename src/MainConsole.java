@@ -50,7 +50,7 @@ public class MainConsole {
                 System.out.println("Sono usciti "+dice1+" e "+dice2);
                 //FARE LA ROBA SE E' DOPPIO
                 System.out.println("Ti muovi di "+(dice1+dice2)+" caselle");
-                if (!player.getPrisoner()) {
+                if (!player.getPrisoner())  {
                     player.movement(dice1+ dice2);
                     Box.Type type = m.field[player.getPosition()].getType();
                     switch (type){
