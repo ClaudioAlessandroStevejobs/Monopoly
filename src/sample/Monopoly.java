@@ -1,9 +1,6 @@
 package sample;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 public class Monopoly {
 
@@ -31,28 +28,28 @@ public class Monopoly {
                 /*Box.Type type, Color color, int price, int mortgageCost, String name, short houses*/
 
                 case 0:
-                    field[i] = new Box(Box.Type.GO);
+                    field[i] = new Box(Box.Type.GO, "Via");
                     break;
                 case 1:
                     field[i] = new Box(Box.Type.PROPERTY, Box.Color.BROWN, 60, "Primo marrone");
                     break;
                 case 2:
-                    field[i] = new Box(Box.Type.CHANCE, "Chance");
+                    field[i] = new Box(Box.Type.CHANCE, "Probabilità");
                     break;
                 case 3:
                     field[i] = new Box(Box.Type.PROPERTY, Box.Color.BROWN, 60, "Secondo marrone");
                     break;
                 case 4:
-                    field[i] = new Box(Box.Type.TAX, "Patrimonial tax");
+                    field[i] = new Box(Box.Type.TAX, "Tassa patrimoniale");
                     break;
                 case 5:
-                    field[i] = new Box(Box.Type.STATION, 200, "South");
+                    field[i] = new Box(Box.Type.STATION, 200, "Stazione Sud");
                     break;
                 case 6:
                     field[i] = new Box(Box.Type.PROPERTY, Box.Color.LIGHT_BLUE, 100, "Primo Azzurro");
                     break;
                 case 7:
-                    field[i] = new Box(Box.Type.CHANCE, "Unexpected");
+                    field[i] = new Box(Box.Type.CHANCE, "Imprevisti");
                     break;
                 case 8:
                     field[i] = new Box(Box.Type.PROPERTY, Box.Color.LIGHT_BLUE, 100, "Secondo Azzurro");
@@ -61,13 +58,13 @@ public class Monopoly {
                     field[i] = new Box(Box.Type.PROPERTY, Box.Color.LIGHT_BLUE, 120,  "Terzo Azzurro");
                     break;
                 case 10:
-                    field[i] = new Box(Box.Type.PRISON);
+                    field[i] = new Box(Box.Type.PRISON, "Piazza Lanza");
                     break;
                 case 11:
                     field[i] = new Box(Box.Type.PROPERTY, Box.Color.PURPLE, 140, "Primo Viola");
                     break;
                 case 12:
-                    field[i] = new Box(Box.Type.SOCIETY, 150,  "Electric society");
+                    field[i] = new Box(Box.Type.SOCIETY, 150,  "Società elettrica");
                     break;
                 case 13:
                     field[i] = new Box(Box.Type.PROPERTY, Box.Color.PURPLE, 140, "Secondo Viola");
@@ -76,13 +73,13 @@ public class Monopoly {
                     field[i] = new Box(Box.Type.PROPERTY, Box.Color.PURPLE, 140, "Terzo Viola");
                     break;
                 case 15:
-                    field[i] = new Box(Box.Type.STATION, 200,  "West");
+                    field[i] = new Box(Box.Type.STATION, 200,  "Stazione Ovest");
                     break;
                 case 16:
                     field[i] = new Box(Box.Type.PROPERTY, Box.Color.ORANGE, 180, "Primo Arancione");
                     break;
                 case 17:
-                    field[i] = new Box(Box.Type.CHANCE, "Chance");
+                    field[i] = new Box(Box.Type.CHANCE, "Probabilità");
                     break;
                 case 18:
                     field[i] = new Box(Box.Type.PROPERTY, Box.Color.ORANGE, 180, "Secondo Arancione");
@@ -91,13 +88,13 @@ public class Monopoly {
                     field[i] = new Box(Box.Type.PROPERTY, Box.Color.ORANGE, 200, "Terzo Arancione");
                     break;
                 case 20:
-                    field[i] = new Box(Box.Type.PARKING);
+                    field[i] = new Box(Box.Type.PARKING, "Parcheggio");
                     break;
                 case 21:
                     field[i] = new Box(Box.Type.PROPERTY, Box.Color.RED, 220, "Primo Rosso");
                     break;
                 case 22:
-                    field[i] = new Box(Box.Type.CHANCE, "Unexpected");
+                    field[i] = new Box(Box.Type.CHANCE, "Imprevisti");
                     break;
                 case 23:
                     field[i] = new Box(Box.Type.PROPERTY, Box.Color.RED, 220, "Secondo Rosso");
@@ -106,7 +103,7 @@ public class Monopoly {
                     field[i] = new Box(Box.Type.PROPERTY, Box.Color.RED, 240, "Terzo Rosso");
                     break;
                 case 25:
-                    field[i] = new Box(Box.Type.STATION, 200, "North");
+                    field[i] = new Box(Box.Type.STATION, 200, "Stazione Nord");
                     break;
                 case 26:
                     field[i] = new Box(Box.Type.PROPERTY, Box.Color.YELLOW, 260, "Primo Giallo");
@@ -115,13 +112,13 @@ public class Monopoly {
                     field[i] = new Box(Box.Type.PROPERTY, Box.Color.YELLOW, 260, "Secondo Giallo");
                     break;
                 case 28:
-                    field[i] = new Box(Box.Type.SOCIETY, 150,  "Drinking water society");
+                    field[i] = new Box(Box.Type.SOCIETY, 150,  "Società acqua potabile");
                     break;
                 case 29:
                     field[i] = new Box(Box.Type.PROPERTY, Box.Color.YELLOW, 280, "Terzo Giallo");
                     break;
                 case 30:
-                    field[i] = new Box(Box.Type.GO_TO_PRISON);
+                    field[i] = new Box(Box.Type.GO_TO_PRISON, "Vai in prigione");
                     break;
                 case 31:
                     field[i] = new Box(Box.Type.PROPERTY, Box.Color.GREEN, 300, "Primo Verde");
@@ -130,22 +127,22 @@ public class Monopoly {
                     field[i] = new Box(Box.Type.PROPERTY, Box.Color.GREEN, 300, "Secondo Verde");
                     break;
                 case 33:
-                    field[i] = new Box(Box.Type.CHANCE, "Chance");
+                    field[i] = new Box(Box.Type.CHANCE, "Probabilità");
                     break;
                 case 34:
                     field[i] = new Box(Box.Type.PROPERTY, Box.Color.GREEN, 320, "Terzo Verde");
                     break;
                 case 35:
-                    field[i] = new Box(Box.Type.STATION, 200,  "East");
+                    field[i] = new Box(Box.Type.STATION, 200,  "Stazione est");
                     break;
                 case 36:
-                    field[i] = new Box(Box.Type.CHANCE, "Unexpected");
+                    field[i] = new Box(Box.Type.CHANCE, "Imprevisti");
                     break;
                 case 37:
                     field[i] = new Box(Box.Type.PROPERTY, Box.Color.BLUE, 350, "Primo Blu");
                     break;
                 case 38:
-                    field[i] = new Box(Box.Type.TAX, "Luxury tax");
+                    field[i] = new Box(Box.Type.TAX, "Tassa di lusso");
                     break;
                 case 39:
                     field[i] = new Box(Box.Type.PROPERTY, Box.Color.BLUE, 400, "Secondo Blu");
@@ -251,6 +248,7 @@ public class Monopoly {
                 else {return "Non hai i soldi";}
             case 2:
                 player.setPosition((short) 0);
+                passGo(player);
                 return "Vai avanti fino al via";
             case 3:
                 goToPrison(player);
@@ -395,4 +393,18 @@ public class Monopoly {
         }
         return player;
     }
+    public String stringBoard(Player player) {
+        String result = "";
+        for (int i = 0; i<40; i++){
+            if (i == (player.getPosition())){
+                result += "\u001B[31mo\u001B[0m ";
+            }
+            else {
+                result += "o ";
+            }
+        }
+        result += "\n";
+        return result;
+    }
+
 }
