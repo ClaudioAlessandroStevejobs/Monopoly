@@ -393,6 +393,33 @@ public class Monopoly {
         }
         return player;
     }
+
+    public Box.Type getTypeFromName(String name){
+        for (Box b: field) {
+            if (b.getName().equals(name)) {
+                return b.getType();
+            }
+        }
+        return null;
+    }
+
+
+    public int getStationTax(ArrayList<String> playerProperties){
+        short stationNumber = 0;
+        for (String s: playerProperties) {
+            if (getTypeFromName(s).equals(Box.Type.STATION)){
+                stationNumber++;
+            }
+        }
+        switch (stationNumber){
+            case 1: return 25;
+            case 2: return 50;
+            case 3: return 100;
+            case 4: return 200;
+        }
+        return 0;
+    }
+
     public String stringBoard(Player player) {
         String result = "";
         for (int i = 0; i<40; i++){
