@@ -6,7 +6,7 @@ public class Player {
 
     public enum Pawn{ARANCINO, ELEFANTE, CAVALLINO, CANNOLO, CASSATA, VULCANO}
     private Pawn pawn;
-    private ArrayList<String> properties;
+    private ArrayList<String> properties = new ArrayList<>();
     private int bill = 2000;
     private short position = 0;
     private boolean prisoner;

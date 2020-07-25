@@ -49,98 +49,34 @@ public class MainConsole {
                 Thread.sleep(2000);
                 System.out.println("Sono usciti "+dice1+" e "+dice2);
                 //FARE LA ROBA SE E' DOPPIO
+
                 System.out.println("Ti smuovi di "+(dice1+dice2)+" caselle");
                 if (!player.getPrisoner())  {
-                    player.movement(dice1+ dice2);
+                    player.movement((dice1 + dice2));
                     Box.Type type = m.field[player.getPosition()].getType();
                     switch (type){
                         case PROPERTY:
-                            for (Player otherPlayer : players) {
-                                if (!otherPlayer.checkProprieties(m.field[player.getPosition()].getName())) {
-                                    System.out.println("Questa proprietà è libera");
-                                    if (player.getBill() < m.field[player.getPosition()].getPrice()) {
-                                        System.out.println("Non hai i soldi per comprala");
-                                    } else {
-                                        char choice = input.next().charAt(0);
-                                        switch (choice) {
-                                            case 's':
-                                                player.payment(m.field[player.getPosition()].getPrice());
-                                                player.addProperty(m.field[player.getPosition()].getName());
-                                                m.setBuildable(player.getProperties());
-                                                break;
-                                            case 'n':
-
-                                                //arraylist di gente esclusa dall'asta
-                                                ArrayList<Player> excludedPlayers = new ArrayList<Player>();
-                                                excludedPlayers.add(player);
-
-                                                //prezzo iniziale
-                                                int price = m.field[player.getPosition()].getPrice();
-
-                                                do {
-                                                    for (Player auctionPlayer : players) {
-                                                        if (!(excludedPlayers.size() == players.length - 1)) {
-                                                            if (!excludedPlayers.contains(auctionPlayer)) {
-                                                                int raise;
-                                                                //controllo se puoi puntare già di base o no
-                                                                if (!auctionPlayer.payment(m.field[player.getPosition()].getPrice())) {
-                                                                    excludedPlayers.add(auctionPlayer);
-                                                                    continue;
-                                                                }
-                                                                do {
-                                                                    System.out.println("prezzo attuale: " + price + "\nrilancia (oppure scrivi 0 per lasciare)");
-                                                                    raise = input.nextInt();
-                                                                    if ((raise != 0 && raise <= price) && auctionPlayer.payment(m.field[player.getPosition()].getPrice()))
-                                                                        System.out.println("errore");
-                                                                } while ((raise != 0 && raise <= price) && auctionPlayer.payment(m.field[player.getPosition()].getPrice()));
-                                                                if (raise == 0) {
-                                                                    excludedPlayers.add(auctionPlayer);
-                                                                    continue;
-                                                                }
-                                                                price = raise;
-                                                            }
-                                                        } else {
-                                                            player.payment(m.field[player.getPosition()].getPrice());
-                                                            auctionPlayer.addProperty(m.field[player.getPosition()].getName());
-                                                        }
-                                                    }
-
-                                                } while (m.getWin());
-
-                                                break;
-                                        }
-                                    }
-                                } else {
-                                    // fare derivato del prezzo delle proprietà
-                                }
+                            System.out.println("Sei su "+ m.field[player.getPosition()].getName());
+                            System.out.println(player.getPosition()); /*test*/
+                            Thread.sleep(1000);
+                            //se la proprietà è tua
+                            if (player.checkProprieties(m.field[player.getPosition()].getName())) {
+                                System.out.println("La proprietà è tua");
                             }
-                        case GO: m.passGo(player);
-                        case GO_TO_PRISON: m.goToPrison(player);
-                        case PARKING:
-                            player.payment(-m.getTaxFund());
-                            System.out.println("Sei passato dal parcheggio, ritira " + m.getTaxFund() + " euro");
-                            m.setTaxFund(0);
-                        case CHANCE:
-                            System.out.println(m.chance(player));
-                        case TAX:
-                            if (m.field[player.getPosition()].getName().equals("Patrimonial tax")){
-                                player.payment(200);
-                                //sperando
-                                m.setTaxFund(+200);
-                            }
-                            else {
-                                player.payment(300);
-                                m.setTaxFund(+300);
-                            }
-                    }
-                    /*if (m.field[player.getPosition()].getType().equals(Box.Type.PROPERTY)) {
-                        for (Player otherPlayer : players) {
-                            if (!otherPlayer.checkProprieties(m.field[player.getPosition()].getName())) {
+                            //se la proprietà è libera
+                            else if (m.isPropertyFree(players, m.field[player.getPosition()].getName())) {
                                 System.out.println("Questa proprietà è libera");
+                                char choice;
+                                //controlla se hai i soldi, se non ce li hai imposta direttamente di andare all'asta
                                 if (player.getBill() < m.field[player.getPosition()].getPrice()) {
                                     System.out.println("Non hai i soldi per comprala");
-                                } else {
-                                    char choice = input.next().charAt(0);
+                                    choice = 'n';
+                                }
+                                //altrimenti ti chiede di inserire la tua scelta
+                                else {
+                                    System.out.println("Vuoi comprarla oppure andare all'asta? (s/n)");
+                                    choice = input.next().charAt(0);
+                                }
                                     switch (choice) {
                                         case 's':
                                             player.payment(m.field[player.getPosition()].getPrice());
@@ -148,14 +84,12 @@ public class MainConsole {
                                             m.setBuildable(player.getProperties());
                                             break;
                                         case 'n':
-
                                             //arraylist di gente esclusa dall'asta
                                             ArrayList<Player> excludedPlayers = new ArrayList<Player>();
                                             excludedPlayers.add(player);
-
                                             //prezzo iniziale
                                             int price = m.field[player.getPosition()].getPrice();
-
+                                            //QUESTO SI DEVE FARE NEL MONOPOLY
                                             do {
                                                 for (Player auctionPlayer : players) {
                                                     if (!(excludedPlayers.size() == players.length - 1)) {
@@ -185,85 +119,117 @@ public class MainConsole {
                                                 }
 
                                             } while (m.getWin());
-
+                                            //QUESTO SI DEVE FARE NEL MONOPOLY
                                             break;
                                     }
+                                } else {
+                                    /*tanto per mostrare i soldi*/System.out.println(player.getBill());
+                                    System.out.println("Devi pagare "+m.field[player.getPosition()].getPropertyTax()+" euri");
+                                    if (!player.payment(m.field[player.getPosition()].getPropertyTax())) {
+                                        //scelte robe da ipotecare?, magari mettiamo un booleano per entrare in un menù di ipoteca DOPO questo switch? ho aggiunto anche la booleana alle box "mortgaged"
+                                        System.out.println("ma non puoi pagare");
+                                    }
+                                    /*tanto per mostrare i soldi*/System.out.println(player.getBill());
                                 }
-                            } else {
-                                // fare derivato del prezzo delle proprietà
+                            break;
+                        case GO:
+                            System.out.println(m.passGo(player));
+                            break;
+                        case GO_TO_PRISON:
+                            System.out.println(m.goToPrison(player));
+                            break;
+                        case PARKING:
+                            player.payment(-m.getTaxFund());
+                            System.out.println("Sei passato dal parcheggio, ritira " + m.getTaxFund() + " euro");
+                            m.setTaxFund(0);
+                            break;
+                        case CHANCE:
+                            System.out.println(m.chance(player));
+                            break;
+                        case TAX:
+                            if (m.field[player.getPosition()].getName().equals("Patrimonial tax")){
+                                player.payment(200);
+                                //sperando
+                                m.setTaxFund(+200);
                             }
-                        }
-                    } else if (m.field[player.getPosition()].getType().equals(Box.Type.CHANCE)) {
-                        m.chance(player);
-                    } else if (m.field[player.getPosition()].getType().equals(Box.Type.GO)) {
-                        m.passGo(player);
-                    } else if (m.field[player.getPosition()].getType().equals(Box.Type.GO_TO_PRISON)) {
-                        m.goToPrison(player);
+                            else {
+                                player.payment(300);
+                                m.setTaxFund(+300);
+                            }
+                            break;
                     }
-                    else if (m.field[player.getPosition()].getType().equals(Box.Type.PARKING)){
-                        player.payment(-m.getTaxFund());
-                        System.out.println("Sei passato dal parcheggio, ritira " + m.getTaxFund() + " euro");
-                        m.setTaxFund(0);
-                    }
-                    else if(m.field[player.getPosition()].getType().equals(Box.Type.TAX)){
-                        if (m.field[player.getPosition()].getName().equals("Patrimonial tax")){
-                            player.payment(200);
-                            //sperando
-                            m.setTaxFund(+200);
-                        }
-                        else {
-                            player.payment(300);
-                            m.setTaxFund(+300);
-                        }
-                    }*/
                 }
+                //questo lo fa se è prigioniero
                 else {
+                    //uscita di prigione
                     if (dice1 == dice2){
                         player.setPrisoner(false);
                         System.out.println("Sono usciti due " + dice1 + ", sei uscito di prigione");
                     }
                 }
+                /* MENU' POST LANCIO, non va qui se sei in prigione (credo) */
+                int choice;
 
-                if(m.comboBuildableColors(player.getProperties()).size()>0) {
-                    char build;
-                    do {
-                        System.out.println("Vuoi costruire?");
-                        build = input.next().charAt(0);
-                        if (build!='s' && build!='n') System.out.println("Errore, dai una risposta corretta!");
-                    }while(build!='s' && build!='n');
-
-                    if (build=='n') {
-                        continue;
+                do {
+                    System.out.println("Menù azioni:\n1) Costruisci\n2) Ipoteca una proprietà\n3) Ricompra una proprietà ipotecata\n4) Fine turno");
+                    choice = input.nextInt();
+                    if (choice <= 1 || choice > 4) {
+                        System.out.println("Errore!");
                     }
-
-                    System.out.println("Elenco zone ");
-                    ArrayList<String> propertiesPerColor = new ArrayList<>();
-                    for (Box.Color c: m.comboBuildableColors(player.getProperties())) {
-                        System.out.println(c + "ZONE");
+                    if(choice == 1 && !(m.comboBuildableColors(player.getProperties()).size()>0)) {
+                        System.out.println("Non hai proprietà edificabili");
+                        choice = 0; /* lo imposto a 0 così il ciclo si ripete */
                     }
-                    Box.Color[] colorsArray = m.comboBuildableColors(player.getProperties()).toArray(new Box.Color[0]);
+                }while(choice <= 1 || choice > 4);
 
-                    /*for (String s: m.getNamesFromColor(colorechesceglitu)) {
-                        System.out.println(s);
-                    }*/
+                switch (choice) {
+                    case 1:
+                        System.out.println("Elenco zone ");
+                        ArrayList<String> propertiesPerColor = new ArrayList<>();
+                        for (Box.Color c: m.comboBuildableColors(player.getProperties())) {
+                            System.out.println(c + "ZONE");
+                        }
+                        Box.Color[] colorsArray = m.comboBuildableColors(player.getProperties()).toArray(new Box.Color[0]);
+                        /*for (String s: m.getNamesFromColor(colorechesceglitu)) {
+                            System.out.println(s);
+                        }*/
+                        break;
+                    case 2:
+                        ArrayList<String> activeProperties = m.getActiveProperties(player.getProperties());
+                        String activeListOutput = "";
+                        for (int k = 0; k < activeProperties.size(); k++) {
+                            activeListOutput += ((k+1)+" - "+activeProperties.get(k));
+                        }
 
+                        do {
+                            System.out.println("Elenco proprietà ipotecabili:\n"+activeListOutput);
+                            choice = input.nextInt();
+                            if (choice < 1 || choice > activeProperties.size()) {
+                                System.out.println("Errore!");
+                            }
+                        }while(choice <= 1 || choice > activeProperties.size());
 
+                        player = m.setMortgageProperty(player, activeProperties.get(choice));
+                        break;
+                    case 3:
+                        ArrayList<String> mortgagedProperties = m.getMortgagedProperties(player.getProperties());
+                        String mortgagedListOutput = "";
+                        for (int k = 0; k < mortgagedProperties.size(); k++) {
+                            mortgagedListOutput += ((k+1)+" - "+mortgagedProperties.get(k));
+                        }
+                        do {
+                            System.out.println("Elenco proprietà ipotecate:\n"+mortgagedListOutput);
+                            choice = input.nextInt();
+                            if (choice < 1 || choice > mortgagedProperties.size()) {
+                                System.out.println("Errore!");
+                            }
+                        }while(choice <= 1 || choice > mortgagedProperties.size());
 
-                    //input
+                        player = m.setActiveProperty(player, mortgagedProperties.get(choice));
+                        break;
+                    case 4:
+                        break;
                 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
             }
         }while (m.getWin());

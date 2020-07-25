@@ -265,4 +265,54 @@ public class Monopoly {
 
         return players;
     }
+
+    //controllo se una proprietà è libera oppure no
+    public boolean isPropertyFree(Player[] players, String propertyName) {
+        for (Player player : players) {
+            if (player.checkProprieties(propertyName)) {
+                return false;
+            }
+        }
+        return true;
+    }
+    public ArrayList<String> getActiveProperties(ArrayList<String> playerProperties) {
+        ArrayList<String> activeProperties = new ArrayList<>();
+        for (Box box: field) {
+            if (playerProperties.contains(box.getName())) {
+                if (!box.isMortgaged()) {
+                    activeProperties.add(box.getName());
+                }
+            }
+        }
+        return activeProperties;
+    }
+    public ArrayList<String> getMortgagedProperties(ArrayList<String> playerProperties) {
+        ArrayList<String> activeProperties = new ArrayList<>();
+        for (Box box: field) {
+            if (playerProperties.contains(box.getName())) {
+                if (box.isMortgaged()) {
+                    activeProperties.add(box.getName());
+                }
+            }
+        }
+        return activeProperties;
+    }
+    public Player setMortgageProperty (Player player, String propertyName) {
+        for (Box box: field) {
+            if (box.getName()==propertyName) {
+                box.setMortgaged(true);
+            }
+            player.payment(-box.getMortgageCost());
+        }
+        return player;
+    }
+    public Player setActiveProperty (Player player, String propertyName) {
+        for (Box box: field) {
+            if (box.getName()==propertyName) {
+                box.setMortgaged(false);
+            }
+            player.payment(box.getMortgageCost()+10);
+        }
+        return player;
+    }
 }

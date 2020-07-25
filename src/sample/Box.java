@@ -10,6 +10,7 @@ public class Box {
     private Type type;
     private Color color;
     private boolean buildable;
+    private boolean mortgaged;
 
     // Costruttore per le proprietà
     public Box(Type type, Color color, int price, String name) {
@@ -37,24 +38,11 @@ public class Box {
         this.mortgageCost = price/2;
         this.name = name;
     }
-
-    public void setPrice(int price) {
-        this.price = price;
+    public void setBuildable(boolean buildable) {
+        this.buildable = buildable;
     }
-    public void setColor(Color color) {
-        this.color = color;
-    }
-    public void setHouses(short houses) {
-        this.houses = houses;
-    }
-    public void setMortgageCost(int mortgageCost) {
-        this.mortgageCost = mortgageCost;
-    }
-    public void setName(String name) {
-        this.name = name;
-    }
-    public void setType(Type type) {
-        this.type = type;
+    public void setMortgaged(boolean mortgaged) {
+        this.mortgaged = mortgaged;
     }
     public Color getColor() {
         return color;
@@ -74,12 +62,8 @@ public class Box {
     public Type getType() {
         return type;
     }
-    public void setBuildable(boolean buildable) {
-        this.buildable = buildable;
-    }
-    public boolean getBuildable() {return buildable;}
-
-    public int houseCost() {
+    public boolean isBuildable() {return buildable;}
+    public int getHouseCost() {
         if (color.equals(Color.BROWN) || color.equals(Color.LIGHT_BLUE)) {
             return 50;
         }
@@ -94,13 +78,32 @@ public class Box {
         }
         return 0;
     }
+    public int getPropertyTax() {
+        switch (houses) {
+            case 0:
+                return price/6;
+            case 1:
+                return price/4;
+            case 2:
+                return price/2;
+            case 3:
+                return price+50;
+            case 4:
+                return price+250;
+        }
+        return 0;
+    }
+    public boolean isMortgaged() {
+        return mortgaged;
+    }
+
     /* metodo per comprare una o più case nella proprietà,
-    vuole in input il numero di case da voler comprare ed il fondo del giocatore,
-    ritorna il prezzo da pagare SOLO quando il pagamento è fattibile, quindi andato a buon fine. */
+        vuole in input il numero di case da voler comprare ed il fondo del giocatore,
+        ritorna il prezzo da pagare SOLO quando il pagamento è fattibile, quindi andato a buon fine. */
     public int housesPurchase(short housesNumber, int playerBill) {
-        if (houseCost() * housesNumber <= playerBill) {
+        if (getHouseCost() * housesNumber <= playerBill) {
             houses = housesNumber;
-            return houseCost() * housesNumber;
+            return getHouseCost() * housesNumber;
         }
         return 0;
     }
