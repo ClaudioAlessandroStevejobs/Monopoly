@@ -95,4 +95,9 @@ public class Player {
     public boolean getCanEscapeFromPrison(){
         return canEscapeFromPrison;
     }
+
+    @Override
+    public String toString() {
+        return "Dati "+pawn +":\nConto: "+bill+"€"+"\nCaselle in tuo possesso:\n"+properties+"\n";
+    }
 }

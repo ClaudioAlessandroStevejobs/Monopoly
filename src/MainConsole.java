@@ -42,7 +42,7 @@ public class MainConsole {
         do {
             for (Player player : players) {
                 char choice;
-                System.out.println("E' il turno di "+player.getPawn()+":\nLa tua posizione attuale è "+player.getPosition());
+                System.out.println("E' il turno di "+player.getPawn()+":\nLa tua posizione attuale è "+player.getPosition()+"\n");
                 Thread.sleep(1000);
                 int dice1 = m.rollDice();
                 int dice2 = m.rollDice();
@@ -51,13 +51,15 @@ public class MainConsole {
                 System.out.println("Sono usciti "+dice1+" e "+dice2);
                 //FARE LA ROBA SE E' DOPPIO
 
-                System.out.println("Ti smuovi di "+(dice1+dice2)+" caselle");
+                System.out.println("Ti muovi di "+(dice1+dice2)+" caselle!\n");
                 if (!player.getPrisoner())  {
                     player.movement((dice1 + dice2));
                     Box.Type type = m.field[player.getPosition()].getType();
-                    System.out.println("Sei su "+ m.field[player.getPosition()].getName());
+                    System.out.println("Sei su "+ m.field[player.getPosition()].getName()+"\n");
                     switch (type){
                         case PROPERTY:
+                        case SOCIETY:
+                        case STATION:
                             Thread.sleep(1000);
                             //se la proprietà è tua
                             if (player.checkProprieties(m.field[player.getPosition()].getName())) {
@@ -174,25 +176,35 @@ public class MainConsole {
                     }
                 }
                 /* MENU' POST LANCIO, non va qui se sei in prigione (credo) */
-                int choice;
+                int secondChoice;
 
                 do {
-                    System.out.println("\nMenù azioni:\n1) Costruisci\n2) Ipoteca una proprietà\n3) Ricompra una proprietà ipotecata\n4) Fine turno\n5) Mostra conto\n6) Mostra proprietà");
-                    choice = input.nextInt();
-                    if (choice <= 1 || choice > 4) {
+                    System.out.println(player.toString());
+                    System.out.println("Azioni:\n1) Costruisci\n2) Ipoteca una proprietà\n3) Ricompra una proprietà ipotecata\n4) Fine turno\n");
+                    secondChoice = input.nextInt();
+                    if (secondChoice <= 1 || secondChoice > 4) {
                         System.out.println("Errore!");
                     }
-                    if(choice == 1 && !(m.comboBuildableColors(player.getProperties()).size()>0)) {
+                    if(secondChoice == 1 && !(m.comboBuildableColors(player.getProperties()).size()>0)) {
                         System.out.println("Non hai proprietà edificabili");
-                        choice = 0; /* lo imposto a 0 così il ciclo si ripete */
+                        secondChoice = 0; /* lo imposto a 0 così il ciclo si ripete */
                     }
-                    if(choice == 2 && player.getProperties().size()==0) {
+                    else if (secondChoice == 2 && player.getProperties().size()==0) {
                         System.out.println("Non hai proprietà attive");
-                        choice = 0; /* lo imposto a 0 così il ciclo si ripete */
+                        secondChoice = 0; /* lo imposto a 0 così il ciclo si ripete */
                     }
-                }while(choice <= 1 || choice > 4);
+                    else if (secondChoice == 2 && player.getProperties().size()==0) {
+                        System.out.println("Non hai proprietà attive");
+                        secondChoice = 0; /* lo imposto a 0 così il ciclo si ripete */
+                    }
+                    else if (secondChoice == 3 && m.getMortgagedProperties(player.getProperties()).size() == 0) {
+                        System.out.println("Non hai proprietà ipotecate");
+                        secondChoice = 0; /* lo imposto a 0 così il ciclo si ripete */
+                    }
 
-                switch (choice) {
+                }while(secondChoice <= 1 || secondChoice > 4);
+
+                switch (secondChoice) {
                     case 1:
                         System.out.println("Elenco zone ");
                         ArrayList<String> propertiesPerColor = new ArrayList<>();
@@ -213,13 +225,13 @@ public class MainConsole {
 
                         do {
                             System.out.println("Elenco proprietà ipotecabili:\n"+activeListOutput);
-                            choice = input.nextInt();
-                            if (choice < 1 || choice > activeProperties.size()) {
+                            secondChoice = input.nextInt();
+                            if (secondChoice < 1 || secondChoice > activeProperties.size()) {
                                 System.out.println("Errore!");
                             }
-                        }while(choice <= 1 || choice > activeProperties.size());
+                        }while(secondChoice <= 1 || secondChoice > activeProperties.size());
 
-                        player = m.setMortgageProperty(player, activeProperties.get(choice));
+                        player = m.setMortgageProperty(player, activeProperties.get(secondChoice));
                         break;
                     case 3:
                         ArrayList<String> mortgagedProperties = m.getMortgagedProperties(player.getProperties());
@@ -229,13 +241,13 @@ public class MainConsole {
                         }
                         do {
                             System.out.println("Elenco proprietà ipotecate:\n"+mortgagedListOutput);
-                            choice = input.nextInt();
-                            if (choice < 1 || choice > mortgagedProperties.size()) {
+                            secondChoice = input.nextInt();
+                            if (secondChoice < 1 || secondChoice > mortgagedProperties.size()) {
                                 System.out.println("Errore!");
                             }
-                        }while(choice <= 1 || choice > mortgagedProperties.size());
+                        }while(secondChoice <= 1 || secondChoice > mortgagedProperties.size());
 
-                        player = m.setActiveProperty(player, mortgagedProperties.get(choice));
+                        player = m.setActiveProperty(player, mortgagedProperties.get(secondChoice));
                         break;
                     case 4:
                         break;
