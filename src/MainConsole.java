@@ -36,7 +36,7 @@ public class MainConsole {
             availablePawns.remove(choice-1);
         }
 
-        //MESCOLAMENTO GIOCATORI
+        //MESCOLAMENTO GIOCATORI f
         players = m.shuffle(players);
 
         do {
