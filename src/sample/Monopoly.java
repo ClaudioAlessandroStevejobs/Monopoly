@@ -30,46 +30,126 @@ public class Monopoly {
 
                 /*Box.Type type, Color color, int price, int mortgageCost, String name, short houses*/
 
-                case 0: field[i] = new Box(Box.Type.GO);
-                case 1: field[i] = new Box(Box.Type.PROPERTY, Box.Color.BROWN, 60, "Primo marrone");
-                case 2: field[i] = new Box(Box.Type.CHANCE, "Chance");
-                case 3: field[i] = new Box(Box.Type.PROPERTY, Box.Color.BROWN, 60, "Secondo marrone");
-                case 4: field[i] = new Box(Box.Type.TAX, "Patrimonial tax");
-                case 5: field[i] = new Box(Box.Type.STATION, 200, "South");
-                case 6: field[i] = new Box(Box.Type.PROPERTY, Box.Color.LIGHT_BLUE, 100, "Primo Azzurro");
-                case 7: field[i] = new Box(Box.Type.CHANCE, "Unexpected");
-                case 8: field[i] = new Box(Box.Type.PROPERTY, Box.Color.LIGHT_BLUE, 100, "Secondo Azzurro");
-                case 9: field[i] = new Box(Box.Type.PROPERTY, Box.Color.LIGHT_BLUE, 120,  "Terzo Azzurro");
-                case 10: field[i] = new Box(Box.Type.PRISON);
-                case 11: field[i] = new Box(Box.Type.PROPERTY, Box.Color.PURPLE, 140, "Primo Viola");
-                case 12: field[i] = new Box(Box.Type.SOCIETY, 150,  "Electric society");
-                case 13: field[i] = new Box(Box.Type.PROPERTY, Box.Color.PURPLE, 140, "Secondo Viola");
-                case 14: field[i] = new Box(Box.Type.PROPERTY, Box.Color.PURPLE, 140, "Terzo Viola");
-                case 15: field[i] = new Box(Box.Type.STATION, 200,  "West");
-                case 16: field[i] = new Box(Box.Type.PROPERTY, Box.Color.ORANGE, 180, "Primo Arancione");
-                case 17: field[i] = new Box(Box.Type.CHANCE, "Chance");
-                case 18: field[i] = new Box(Box.Type.PROPERTY, Box.Color.ORANGE, 180, "Secondo Arancione");
-                case 19: field[i] = new Box(Box.Type.PROPERTY, Box.Color.ORANGE, 200, "Terzo Arancione");
-                case 20: field[i] = new Box(Box.Type.PARKING);
-                case 21: field[i] = new Box(Box.Type.PROPERTY, Box.Color.RED, 220, "Primo Rosso");
-                case 22: field[i] = new Box(Box.Type.CHANCE, "Unexpected");
-                case 23: field[i] = new Box(Box.Type.PROPERTY, Box.Color.RED, 220, "Secondo Rosso");
-                case 24: field[i] = new Box(Box.Type.PROPERTY, Box.Color.RED, 240, "Terzo Rosso");
-                case 25: field[i] = new Box(Box.Type.STATION, 200, "North");
-                case 26: field[i] = new Box(Box.Type.PROPERTY, Box.Color.YELLOW, 260, "Primo Giallo");
-                case 27: field[i] = new Box(Box.Type.PROPERTY, Box.Color.YELLOW, 260, "Secondo Giallo");
-                case 28: field[i] = new Box(Box.Type.SOCIETY, 150,  "Drinking water society");
-                case 29: field[i] = new Box(Box.Type.PROPERTY, Box.Color.YELLOW, 280, "Terzo Giallo");
-                case 30: field[i] = new Box(Box.Type.GO_TO_PRISON);
-                case 31: field[i] = new Box(Box.Type.PROPERTY, Box.Color.GREEN, 300, "Primo Verde");
-                case 32: field[i] = new Box(Box.Type.PROPERTY, Box.Color.GREEN, 300, "Secondo Verde");
-                case 33: field[i] = new Box(Box.Type.CHANCE, "Chance");
-                case 34: field[i] = new Box(Box.Type.PROPERTY, Box.Color.GREEN, 320, "Terzo Verde");
-                case 35: field[i] = new Box(Box.Type.STATION, 200,  "East");
-                case 36: field[i] = new Box(Box.Type.CHANCE, "Unexpected");
-                case 37: field[i] = new Box(Box.Type.PROPERTY, Box.Color.BLUE, 350, "Primo Blu");
-                case 38: field[i] = new Box(Box.Type.TAX, "Luxury tax");
-                case 39: field[i] = new Box(Box.Type.PROPERTY, Box.Color.BLUE, 400, "Palermo");
+                case 0:
+                    field[i] = new Box(Box.Type.GO);
+                    break;
+                case 1:
+                    field[i] = new Box(Box.Type.PROPERTY, Box.Color.BROWN, 60, "Primo marrone");
+                    break;
+                case 2:
+                    field[i] = new Box(Box.Type.CHANCE, "Chance");
+                    break;
+                case 3:
+                    field[i] = new Box(Box.Type.PROPERTY, Box.Color.BROWN, 60, "Secondo marrone");
+                    break;
+                case 4:
+                    field[i] = new Box(Box.Type.TAX, "Patrimonial tax");
+                    break;
+                case 5:
+                    field[i] = new Box(Box.Type.STATION, 200, "South");
+                    break;
+                case 6:
+                    field[i] = new Box(Box.Type.PROPERTY, Box.Color.LIGHT_BLUE, 100, "Primo Azzurro");
+                    break;
+                case 7:
+                    field[i] = new Box(Box.Type.CHANCE, "Unexpected");
+                    break;
+                case 8:
+                    field[i] = new Box(Box.Type.PROPERTY, Box.Color.LIGHT_BLUE, 100, "Secondo Azzurro");
+                    break;
+                case 9:
+                    field[i] = new Box(Box.Type.PROPERTY, Box.Color.LIGHT_BLUE, 120,  "Terzo Azzurro");
+                    break;
+                case 10:
+                    field[i] = new Box(Box.Type.PRISON);
+                    break;
+                case 11:
+                    field[i] = new Box(Box.Type.PROPERTY, Box.Color.PURPLE, 140, "Primo Viola");
+                    break;
+                case 12:
+                    field[i] = new Box(Box.Type.SOCIETY, 150,  "Electric society");
+                    break;
+                case 13:
+                    field[i] = new Box(Box.Type.PROPERTY, Box.Color.PURPLE, 140, "Secondo Viola");
+                    break;
+                case 14:
+                    field[i] = new Box(Box.Type.PROPERTY, Box.Color.PURPLE, 140, "Terzo Viola");
+                    break;
+                case 15:
+                    field[i] = new Box(Box.Type.STATION, 200,  "West");
+                    break;
+                case 16:
+                    field[i] = new Box(Box.Type.PROPERTY, Box.Color.ORANGE, 180, "Primo Arancione");
+                    break;
+                case 17:
+                    field[i] = new Box(Box.Type.CHANCE, "Chance");
+                    break;
+                case 18:
+                    field[i] = new Box(Box.Type.PROPERTY, Box.Color.ORANGE, 180, "Secondo Arancione");
+                    break;
+                case 19:
+                    field[i] = new Box(Box.Type.PROPERTY, Box.Color.ORANGE, 200, "Terzo Arancione");
+                    break;
+                case 20:
+                    field[i] = new Box(Box.Type.PARKING);
+                    break;
+                case 21:
+                    field[i] = new Box(Box.Type.PROPERTY, Box.Color.RED, 220, "Primo Rosso");
+                    break;
+                case 22:
+                    field[i] = new Box(Box.Type.CHANCE, "Unexpected");
+                    break;
+                case 23:
+                    field[i] = new Box(Box.Type.PROPERTY, Box.Color.RED, 220, "Secondo Rosso");
+                    break;
+                case 24:
+                    field[i] = new Box(Box.Type.PROPERTY, Box.Color.RED, 240, "Terzo Rosso");
+                    break;
+                case 25:
+                    field[i] = new Box(Box.Type.STATION, 200, "North");
+                    break;
+                case 26:
+                    field[i] = new Box(Box.Type.PROPERTY, Box.Color.YELLOW, 260, "Primo Giallo");
+                    break;
+                case 27:
+                    field[i] = new Box(Box.Type.PROPERTY, Box.Color.YELLOW, 260, "Secondo Giallo");
+                    break;
+                case 28:
+                    field[i] = new Box(Box.Type.SOCIETY, 150,  "Drinking water society");
+                    break;
+                case 29:
+                    field[i] = new Box(Box.Type.PROPERTY, Box.Color.YELLOW, 280, "Terzo Giallo");
+                    break;
+                case 30:
+                    field[i] = new Box(Box.Type.GO_TO_PRISON);
+                    break;
+                case 31:
+                    field[i] = new Box(Box.Type.PROPERTY, Box.Color.GREEN, 300, "Primo Verde");
+                    break;
+                case 32:
+                    field[i] = new Box(Box.Type.PROPERTY, Box.Color.GREEN, 300, "Secondo Verde");
+                    break;
+                case 33:
+                    field[i] = new Box(Box.Type.CHANCE, "Chance");
+                    break;
+                case 34:
+                    field[i] = new Box(Box.Type.PROPERTY, Box.Color.GREEN, 320, "Terzo Verde");
+                    break;
+                case 35:
+                    field[i] = new Box(Box.Type.STATION, 200,  "East");
+                    break;
+                case 36:
+                    field[i] = new Box(Box.Type.CHANCE, "Unexpected");
+                    break;
+                case 37:
+                    field[i] = new Box(Box.Type.PROPERTY, Box.Color.BLUE, 350, "Primo Blu");
+                    break;
+                case 38:
+                    field[i] = new Box(Box.Type.TAX, "Luxury tax");
+                    break;
+                case 39:
+                    field[i] = new Box(Box.Type.PROPERTY, Box.Color.BLUE, 400, "Secondo Blu");
+                    break;
             }
         }
     }

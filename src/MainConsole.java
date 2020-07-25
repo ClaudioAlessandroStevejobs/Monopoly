@@ -32,7 +32,7 @@ public class MainConsole {
             int choice;
             choice = input.nextInt();
             players[k]= new Player(availablePawns.get(choice-1));
-            System.out.println("Il giocatore "+(k+1)+" ha scelto "+availablePawns.get(choice-1)+"!");
+            System.out.println("Il giocatore "+(k+1)+" ha scelto "+availablePawns.get(choice-1)+"!\n");
             availablePawns.remove(choice-1);
         }
 
@@ -41,6 +41,7 @@ public class MainConsole {
 
         do {
             for (Player player : players) {
+                char choice;
                 System.out.println("E' il turno di "+player.getPawn()+":\nLa tua posizione attuale è "+player.getPosition());
                 Thread.sleep(1000);
                 int dice1 = m.rollDice();
@@ -54,10 +55,9 @@ public class MainConsole {
                 if (!player.getPrisoner())  {
                     player.movement((dice1 + dice2));
                     Box.Type type = m.field[player.getPosition()].getType();
+                    System.out.println("Sei su "+ m.field[player.getPosition()].getName());
                     switch (type){
                         case PROPERTY:
-                            System.out.println("Sei su "+ m.field[player.getPosition()].getName());
-                            System.out.println(player.getPosition()); /*test*/
                             Thread.sleep(1000);
                             //se la proprietà è tua
                             if (player.checkProprieties(m.field[player.getPosition()].getName())) {
@@ -66,7 +66,6 @@ public class MainConsole {
                             //se la proprietà è libera
                             else if (m.isPropertyFree(players, m.field[player.getPosition()].getName())) {
                                 System.out.println("Questa proprietà è libera");
-                                char choice;
                                 //controlla se hai i soldi, se non ce li hai imposta direttamente di andare all'asta
                                 if (player.getBill() < m.field[player.getPosition()].getPrice()) {
                                     System.out.println("Non hai i soldi per comprala");
@@ -74,8 +73,15 @@ public class MainConsole {
                                 }
                                 //altrimenti ti chiede di inserire la tua scelta
                                 else {
-                                    System.out.println("Vuoi comprarla oppure andare all'asta? (s/n)");
-                                    choice = input.next().charAt(0);
+
+                                    do {
+                                        System.out.println("Vuoi comprarla oppure andare all'asta? (s/n)");
+                                        choice = input.next().charAt(0);
+                                        if (choice != 's' && choice != 'n') {
+                                            System.out.println("Errore!");
+                                        }
+                                    }while(choice != 's' && choice != 'n');
+
                                 }
                                     switch (choice) {
                                         case 's':
@@ -171,13 +177,17 @@ public class MainConsole {
                 int choice;
 
                 do {
-                    System.out.println("Menù azioni:\n1) Costruisci\n2) Ipoteca una proprietà\n3) Ricompra una proprietà ipotecata\n4) Fine turno");
+                    System.out.println("\nMenù azioni:\n1) Costruisci\n2) Ipoteca una proprietà\n3) Ricompra una proprietà ipotecata\n4) Fine turno\n5) Mostra conto\n6) Mostra proprietà");
                     choice = input.nextInt();
                     if (choice <= 1 || choice > 4) {
                         System.out.println("Errore!");
                     }
                     if(choice == 1 && !(m.comboBuildableColors(player.getProperties()).size()>0)) {
                         System.out.println("Non hai proprietà edificabili");
+                        choice = 0; /* lo imposto a 0 così il ciclo si ripete */
+                    }
+                    if(choice == 2 && player.getProperties().size()==0) {
+                        System.out.println("Non hai proprietà attive");
                         choice = 0; /* lo imposto a 0 così il ciclo si ripete */
                     }
                 }while(choice <= 1 || choice > 4);
