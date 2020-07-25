@@ -41,7 +41,7 @@ public class MainConsole {
 
         do {
             for (Player player : players) {
-                char choice;
+                char choiceYesOrNot;
                 System.out.println("E' il turno di "+player.getPawn()+":\nLa tua posizione attuale è "+player.getPosition()+"\n");
                 Thread.sleep(1000);
                 int dice1 = m.rollDice();
@@ -71,77 +71,108 @@ public class MainConsole {
                                 //controlla se hai i soldi, se non ce li hai imposta direttamente di andare all'asta
                                 if (player.getBill() < m.field[player.getPosition()].getPrice()) {
                                     System.out.println("Non hai i soldi per comprala");
-                                    choice = 'n';
+                                    choiceYesOrNot = 'n';
                                 }
                                 //altrimenti ti chiede di inserire la tua scelta
                                 else {
 
                                     do {
                                         System.out.println("Vuoi comprarla? (s/n)");
-                                        choice = input.next().charAt(0);
-                                        if (choice != 's' && choice != 'n') {
+                                        choiceYesOrNot = input.next().charAt(0);
+                                        if (choiceYesOrNot != 's' && choiceYesOrNot != 'n') {
                                             System.out.println("Errore!");
                                         }
-                                    }while(choice != 's' && choice != 'n');
+                                    }while(choiceYesOrNot != 's' && choiceYesOrNot != 'n');
 
                                 }
-                                    switch (choice) {
+                                    switch (choiceYesOrNot) {
                                         case 's':
                                             player.payment(m.field[player.getPosition()].getPrice());
                                             player.addProperty(m.field[player.getPosition()].getName());
-
-                                            System.out.println(player.toString());
                                             if (type.equals(Box.Type.PROPERTY)) {
                                                     m.setBuildable(player.getProperties());
                                             }
                                             break;
                                         case 'n':
                                             //arraylist di gente esclusa dall'asta
-                                            ArrayList<Player> excludedPlayers = new ArrayList<Player>();
-                                            excludedPlayers.add(player);
+                                            ArrayList<Player> auctionPlayers = new ArrayList<>(Arrays.asList(players));
+                                            auctionPlayers.remove(player);
+                                            boolean auctionExit = false;
+                                            Player.Pawn lastAuctionPlayer = null;
+
                                             //prezzo iniziale
                                             int price = m.field[player.getPosition()].getPrice();
-                                            //QUESTO SI DEVE FARE NEL MONOPOLY
-                                            do {
-                                                for (Player auctionPlayer : players) {
-                                                    if (!(excludedPlayers.size() == players.length - 1)) {
-                                                        if (!excludedPlayers.contains(auctionPlayer)) {
-                                                            int raise;
-                                                            //controllo se puoi puntare già di base o no
-                                                            if (!auctionPlayer.payment(m.field[player.getPosition()].getPrice())) {
-                                                                excludedPlayers.add(auctionPlayer);
-                                                                continue;
-                                                            }
-                                                            do {
-                                                                System.out.println("prezzo attuale: " + price + "\nrilancia (oppure scrivi 0 per lasciare)");
-                                                                raise = input.nextInt();
-                                                                if ((raise != 0 && raise <= price) && auctionPlayer.payment(m.field[player.getPosition()].getPrice()))
-                                                                    System.out.println("errore");
-                                                            } while ((raise != 0 && raise <= price) && auctionPlayer.payment(m.field[player.getPosition()].getPrice()));
-                                                            if (raise == 0) {
-                                                                excludedPlayers.add(auctionPlayer);
-                                                                continue;
-                                                            }
-                                                            price = raise;
-                                                        }
-                                                    } else {
-                                                        player.payment(m.field[player.getPosition()].getPrice());
-                                                        auctionPlayer.addProperty(m.field[player.getPosition()].getName());
-                                                    }
-                                                }
 
-                                            } while (m.getWin());
-                                            //QUESTO SI DEVE FARE NEL MONOPOLY
+                                            do {
+                                                for (Player auctionPlayer : auctionPlayers) {
+                                                    int raise;
+                                                    System.out.println(auctionPlayers.size());
+                                                    if (auctionPlayers.size()==1 && auctionPlayer.getPawn() == lastAuctionPlayer) {
+                                                        auctionPlayer.payment(price);
+                                                        auctionPlayer.addProperty(m.field[player.getPosition()].getName());
+                                                        System.out.println(auctionPlayer.getPawn() + " si è aggiudicato " + m.field[player.getPosition()].getName() + " per " + price + " euro");
+                                                        auctionExit = true;
+                                                        break;
+                                                    }
+                                                    //controllo se puoi puntare già di base o no
+                                                    if (!auctionPlayer.payment(m.field[player.getPosition()].getPrice())) {
+                                                        auctionPlayer.payment(-m.field[player.getPosition()].getPrice());
+                                                        System.out.println(auctionPlayer.getPawn() + " non può pagare!");
+                                                        auctionPlayers.remove(auctionPlayer);
+                                                        continue;
+                                                    }
+                                                    auctionPlayer.payment(-m.field[player.getPosition()].getPrice());
+                                                    do {
+                                                        System.out.println("\n"+auctionPlayer.toString());
+                                                        //solo nel primo turno
+                                                        System.out.println("Ultima puntata:");
+                                                        if (lastAuctionPlayer != null) {
+                                                            System.out.println("Giocatore: "+lastAuctionPlayer);
+                                                        }
+                                                        System.out.println("Prezzo attuale: " + price + "\nrilancia (oppure scrivi 0 per lasciare)");
+                                                        raise = input.nextInt();
+                                                        if ((raise != 0 && raise <= price)||raise>auctionPlayer.getBill())
+                                                            System.out.println("errore");
+                                                    } while ((raise != 0 && raise <= price)||raise>auctionPlayer.getBill());
+
+                                                    if (auctionPlayers.size()==1 && raise == 0) {
+                                                        System.out.println("\n"+m.field[player.getPosition()].getName() + " rimane libera!\n");
+                                                        auctionExit = true;
+                                                        break;
+                                                    }
+                                                    if (raise == 0) {
+                                                        auctionPlayers.remove(auctionPlayer);
+                                                        continue;
+                                                    }
+
+                                                    price = raise;
+                                                    lastAuctionPlayer = auctionPlayer.getPawn();
+
+                                                }
+                                            } while (!auctionExit);
+
                                             break;
                                     }
                                 } else {
-                                    /*tanto per mostrare i soldi*/System.out.println(player.getBill());
-                                    System.out.println("Devi pagare "+m.field[player.getPosition()].getPropertyTax()+" euri");
-                                    if (!player.payment(m.field[player.getPosition()].getPropertyTax())) {
-                                        //scelte robe da ipotecare?, magari mettiamo un booleano per entrare in un menù di ipoteca DOPO questo switch? ho aggiunto anche la booleana alle box "mortgaged"
-                                        System.out.println("ma non puoi pagare");
+                                    if (type.equals(Box.Type.PROPERTY)) {
+                                        /*tanto per mostrare i soldi*/System.out.println(player.getBill());
+                                        System.out.println("Devi pagare "+m.field[player.getPosition()].getPropertyTax()+" euri");
+                                        if (!player.payment(m.field[player.getPosition()].getPropertyTax())) {
+                                            //scelte robe da ipotecare?, magari mettiamo un booleano per entrare in un menù di ipoteca DOPO questo switch? ho aggiunto anche la booleana alle box "mortgaged"
+                                            System.out.println("ma non puoi pagare");
+                                        }
+                                        /*tanto per mostrare i soldi*/System.out.println(player.getBill());
                                     }
-                                    /*tanto per mostrare i soldi*/System.out.println(player.getBill());
+                                    else if (type.equals(Box.Type.STATION)) {
+                                        /*tanto per mostrare i soldi*/System.out.println(player.getBill());
+                                        System.out.println("Devi pagare "+m.getStationTax(player.getProperties())+" euri");
+                                        if (!player.payment(m.getStationTax(player.getProperties()))) {
+                                            //scelte robe da ipotecare?, magari mettiamo un booleano per entrare in un menù di ipoteca DOPO questo switch? ho aggiunto anche la booleana alle box "mortgaged"
+                                            System.out.println("ma non puoi pagare");
+                                        }
+                                        /*tanto per mostrare i soldi*/System.out.println(player.getBill());
+                                    }
+
                                 }
                             break;
                         case GO:
