@@ -5,7 +5,7 @@ public class Box {
     public enum Color{RED, YELLOW, BLUE, LIGHT_BLUE, GREEN, ORANGE, PURPLE, BROWN, NONE}
     private int price;
     private int mortgageCost;
-    private String name;
+    private String name = "";
     private short houses;
     private Type type;
     private Color color;

@@ -70,7 +70,7 @@ public class Player {
     public ArrayList<String> getProperties() {
         return properties;
     }
-    public ArrayList<Pawn> getPawnArray() {
+    public static ArrayList<Pawn> getPawnArray() {
         ArrayList<Pawn> pawns = new ArrayList<Pawn>() {{
                 add(Pawn.ELEFANTE);
                 add(Pawn.CANNOLO);
@@ -98,6 +98,6 @@ public class Player {
 
     @Override
     public String toString() {
-        return "Dati "+pawn +":\nConto: "+bill+"€"+"\nCaselle in tuo possesso:\n"+properties+"\n";
+        return "Dati "+pawn +":\nPosizione: "+position+"\nConto: "+bill+"€"+"\nCaselle in tuo possesso:\n"+properties+"\n";
     }
 }
