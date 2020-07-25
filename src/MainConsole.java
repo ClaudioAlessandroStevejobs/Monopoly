@@ -89,7 +89,9 @@ public class MainConsole {
                                         case 's':
                                             player.payment(m.field[player.getPosition()].getPrice());
                                             player.addProperty(m.field[player.getPosition()].getName());
-                                            m.setBuildable(player.getProperties());
+                                            if (type.equals(Box.Type.PROPERTY)) {
+                                                m.setBuildable(player.getProperties());
+                                            }
                                             break;
                                         case 'n':
                                             //arraylist di gente esclusa dall'asta
