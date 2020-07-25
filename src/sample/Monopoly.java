@@ -353,6 +353,7 @@ public class Monopoly {
         }
         return true;
     }
+
     public ArrayList<String> getActiveProperties(ArrayList<String> playerProperties) {
         ArrayList<String> activeProperties = new ArrayList<>();
         for (Box box: field) {
@@ -364,6 +365,7 @@ public class Monopoly {
         }
         return activeProperties;
     }
+
     public ArrayList<String> getMortgagedProperties(ArrayList<String> playerProperties) {
         ArrayList<String> activeProperties = new ArrayList<>();
         for (Box box: field) {
@@ -375,6 +377,7 @@ public class Monopoly {
         }
         return activeProperties;
     }
+
     public Player setMortgageProperty (Player player, String propertyName) {
         for (Box box: field) {
             if (box.getName()==propertyName) {
@@ -384,6 +387,7 @@ public class Monopoly {
         }
         return player;
     }
+
     public Player setActiveProperty (Player player, String propertyName) {
         for (Box box: field) {
             if (box.getName()==propertyName) {
@@ -402,7 +406,6 @@ public class Monopoly {
         }
         return null;
     }
-
 
     public int getStationTax(ArrayList<String> playerProperties){
         short stationNumber = 0;
