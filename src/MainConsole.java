@@ -11,19 +11,19 @@ public class MainConsole {
         Monopoly m = new Monopoly();
 
         /* SET GIOCATORI, RICORDA TRY CATCH */
-        int playerNum;
-        do {
-            System.out.println("Quanti giocatori partecipano? (2-6)");
-            playerNum = input.nextInt();
-            if (playerNum <= 1 || playerNum > 6) {
-                System.out.println("Errore!");
-            }
-        }while(playerNum <= 1 || playerNum > 6);
+        int playerNum = 0;
+
+            do {
+                System.out.println("Quanti giocatori partecipano? (2-6)");
+                playerNum = input.nextInt();if (playerNum <= 1 || playerNum > 6) {
+                    System.out.println("Errore!");
+                }
+            }while(playerNum <= 1 || playerNum > 6);
+
         Player[] players = new Player[playerNum];
-        players[0] = new Player();
 
         /* SET PEDINE, RICORDA TRY CATCH */
-        ArrayList<Player.Pawn> availablePawns = players[0].getPawnArray();
+        ArrayList<Player.Pawn> availablePawns = Player.getPawnArray();
         for (int k = 0; k<playerNum; k++) {
             System.out.println("Giocatore "+(k+1)+":\nScegli la pedina tra queste:");
             for (int j = 0; j < availablePawns.size(); j++) {
@@ -77,7 +77,7 @@ public class MainConsole {
                                 else {
 
                                     do {
-                                        System.out.println("Vuoi comprarla oppure andare all'asta? (s/n)");
+                                        System.out.println("Vuoi comprarla? (s/n)");
                                         choice = input.next().charAt(0);
                                         if (choice != 's' && choice != 'n') {
                                             System.out.println("Errore!");
@@ -89,8 +89,10 @@ public class MainConsole {
                                         case 's':
                                             player.payment(m.field[player.getPosition()].getPrice());
                                             player.addProperty(m.field[player.getPosition()].getName());
+
+                                            System.out.println(player.toString());
                                             if (type.equals(Box.Type.PROPERTY)) {
-                                                m.setBuildable(player.getProperties());
+                                                    m.setBuildable(player.getProperties());
                                             }
                                             break;
                                         case 'n':
@@ -195,10 +197,6 @@ public class MainConsole {
                         System.out.println("Non hai proprietà attive");
                         secondChoice = 0; /* lo imposto a 0 così il ciclo si ripete */
                     }
-                    else if (secondChoice == 2 && player.getProperties().size()==0) {
-                        System.out.println("Non hai proprietà attive");
-                        secondChoice = 0; /* lo imposto a 0 così il ciclo si ripete */
-                    }
                     else if (secondChoice == 3 && m.getMortgagedProperties(player.getProperties()).size() == 0) {
                         System.out.println("Non hai proprietà ipotecate");
                         secondChoice = 0; /* lo imposto a 0 così il ciclo si ripete */
@@ -231,9 +229,9 @@ public class MainConsole {
                             if (secondChoice < 1 || secondChoice > activeProperties.size()) {
                                 System.out.println("Errore!");
                             }
-                        }while(secondChoice <= 1 || secondChoice > activeProperties.size());
+                        }while(secondChoice < 1 || secondChoice > activeProperties.size());
 
-                        player = m.setMortgageProperty(player, activeProperties.get(secondChoice));
+                        player = m.setMortgageProperty(player, activeProperties.get(secondChoice-1));
                         break;
                     case 3:
                         ArrayList<String> mortgagedProperties = m.getMortgagedProperties(player.getProperties());
@@ -247,9 +245,9 @@ public class MainConsole {
                             if (secondChoice < 1 || secondChoice > mortgagedProperties.size()) {
                                 System.out.println("Errore!");
                             }
-                        }while(secondChoice <= 1 || secondChoice > mortgagedProperties.size());
+                        }while(secondChoice < 1 || secondChoice > mortgagedProperties.size());
 
-                        player = m.setActiveProperty(player, mortgagedProperties.get(secondChoice));
+                        player = m.setActiveProperty(player, mortgagedProperties.get(secondChoice-1));
                         break;
                     case 4:
                         break;
