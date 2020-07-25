@@ -1,5 +1,7 @@
 package sample;
 
+import java.util.function.BinaryOperator;
+
 public class Box {
     public enum Type{PROPERTY, PRISON, GO, GO_TO_PRISON, PARKING, CHANCE, TAX, SOCIETY, STATION}
     public enum Color{RED, YELLOW, BLUE, LIGHT_BLUE, GREEN, ORANGE, PURPLE, BROWN}
@@ -98,9 +100,26 @@ public class Box {
         return mortgaged;
     }
 
+    /*public int getNumberHousesOfProperties(Box box){
+        return box.houses;
+    }
+
+    public int countHouses(Player player){
+        for (String s: player.getProperties()) {
+
+            getNumberHousesOfProperties();
+        }
+    }
+
+    public Box getProprietiesFromName(String name){
+        name = getName();
+
+    }
+*/
     /* metodo per comprare una o più case nella proprietà,
         vuole in input il numero di case da voler comprare ed il fondo del giocatore,
         ritorna il prezzo da pagare SOLO quando il pagamento è fattibile, quindi andato a buon fine. */
+
     public int housesPurchase(short housesNumber, int playerBill) {
         if (getHouseCost() * housesNumber <= playerBill) {
             houses = housesNumber;
@@ -108,6 +127,5 @@ public class Box {
         }
         return 0;
     }
-
 
 }

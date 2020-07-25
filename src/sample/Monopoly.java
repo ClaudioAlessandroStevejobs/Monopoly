@@ -24,9 +24,6 @@ public class Monopoly {
     public void initialize(){
        for (int i = 0; i<field.length; i++){
             switch (i){
-
-                /*Box.Type type, Color color, int price, int mortgageCost, String name, short houses*/
-
                 case 0:
                     field[i] = new Box(Box.Type.GO, "Via");
                     break;
@@ -222,9 +219,7 @@ public class Monopoly {
 
     public String chance(Player player){
         ArrayList<Integer> discardedChance = new ArrayList<>();
-
         int chanceIndex;
-
         do {
             chanceIndex = random.nextInt(12);
             if (!discardedChance.contains(chanceIndex)) {
@@ -243,34 +238,33 @@ public class Monopoly {
                 if(player.payment(125)) {
                     //boh da vedere
                     setTaxFund(+125);
-                    return "Hai parcheggiato in doppia fila paghi la multa di 125 euro";
+                    return "Hai parcheggiato in tripla fila paghi la multa di 125 euro";
                 }
                 else {return "Non hai i soldi";}
             case 2:
                 player.setPosition((short) 0);
                 passGo(player);
-                return "Vai avanti fino al via";
+                return "hai scordato il portafoglio, torna al via per riprenderlo";
             case 3:
                 goToPrison(player);
-                return "senza passare dal via";
+                return "Ti hanno fermato in guida in un elevato stato di ebrezza, passi 3 turni in prigione";
             case 4:
                 player.movement(-3);
-                return "Fai tre passi indietro";
+                return "Un pedone ti punta il ferro, fai tre passi indietro";
             case 5:
                 player.payment(50);
-                return "Versi 50 euro in beneficienza";
+                return "Fai la spesa per un festino, spendi 50 euro";
             case 6:
                 player.payment(40);
                 taxFund += 40;
                 return "40 euro di multa per aver guidato senza patente";
             case 7:
                 player.payment(375);
-                return "Matrimonio in famiglia:spese impreviste 375 euro";
+                return "Ti rompono un vetro della macchina, devi ripararla, spendi 375 euro";
             case 8:
                 if (player.getPrisoner()){
                     player.setPrisoner(false);
-                    return "Uscite gratis di prigione, \n" +
-                        "se non ci siete potete conservare questo cartoncino sino al momento di servirvene";
+                    return "Hai snichato il gang esci di prigione";
                 }
                 else {
                     player.setCanEscapeFromPrison(true);
@@ -278,7 +272,7 @@ public class Monopoly {
                 }
             case 9:
                 player.payment(-400);
-                return "Vinci 400 al gratta e vinci";
+                return "Vinci 400 euro al gratta e vinci";
             case 10:
                 player.payment(-130);
                 return "E' il tuo compleanno, ti regalano 130 euro";
@@ -290,10 +284,28 @@ public class Monopoly {
                 taxFund += 500;
                 return "Paghi 500 euro di debiti alla banca";
             case 13:
+                if (player.getPosition()>25){
+                    player.payment(-500);
+                }
+                player.setPosition((short) 25);
+                return "Vai fino alla stazione nord, se passate da via ritirate 500";
             case 14:
+                if (player.getPosition()>11){
+                    player.payment(-500);
+                }
+                player.setPosition((short) 11);
+                return "Vai fino al primo viola, se passate da via ritirate 500";
             case 15:
+                player.setPosition((short) 39);
+                return "Vai nel secondo blu";
             case 16:
+                player.setPosition((short) (player.getPosition()+2));
+                return "Il posteggiatore ti ferma, non hai monetine " +
+                        "\nquindi cerchi parcheggio due caselle più avanti";
             case 17:
+
+                return "Avete tutti i vostri stabili da riparare: " +
+                        "pagare 60 euro per ogni casa e 250 per ogni albergo.";
             case 18:
             case 19:
             case 20:
@@ -346,6 +358,7 @@ public class Monopoly {
 
     //controllo se una proprietà è libera oppure no
     public boolean isPropertyFree(Player[] players, String propertyName) {
+
         for (Player player : players) {
             if (player.checkProprieties(propertyName)) {
                 return false;
@@ -423,11 +436,66 @@ public class Monopoly {
         return 0;
     }
 
+    public int getSocietyTax(ArrayList<String> playerProperties, int dices){
+        short societyNumber = 0;
+        for (String s: playerProperties) {
+            if (getTypeFromName(s).equals(Box.Type.SOCIETY)){
+                societyNumber++;
+            }
+        }
+        switch (societyNumber){
+            case 1: return dices*4;
+            case 2: return dices*10;
+        }
+        return 0;
+    }
+/*
+        public int countHouses(Player player){
+            for (String s: player.getProperties()) {
+
+            }
+        }
+*/
     public String stringBoard(Player player) {
         String result = "";
+        /*int i;
+        int j = 0;
+        for (i = 0; i<11; i++){
+            result += "o  ";
+            j++;
+        }
+        for (i = 9; i>0; i--){
+            result += "\no                             o  ";
+        }
+        result += "\n";
+        for (i = 0; i < 11; i++){
+            result += "o  ";
+        }
+        result += "\n";
+        return result;*/
+
         for (int i = 0; i<40; i++){
-            if (i == (player.getPosition())){
-                result += "\u001B[31mo\u001B[0m ";
+            if (i == player.getPosition()){
+                switch (player.getPawn()){
+                    case CANNOLO:
+                        result += "\u001B[31mo \u001B[0m";
+                        break;
+                    case CASSATA:
+                        result += "\u001B[32mo \u001B[0m";
+                        break;
+                    case VULCANO:
+                        result += "\u001B[33mo \u001B[0m";
+                        break;
+                    case ARANCINO:
+                        result += "\u001B[34mo \u001B[0m";
+                        break;
+                    case ELEFANTE:
+                        result += "\u001B[35mo \u001B[0m";
+                        break;
+                    case CAVALLINO:
+                        result += "\u001B[36mo \u001B[0m";
+                        break;
+                }
             }
             else {
                 result += "o ";

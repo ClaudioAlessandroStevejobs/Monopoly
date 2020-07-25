@@ -104,7 +104,15 @@ public class Player {
     public boolean isOutOfAuction() {
         return outOfAuction;
     }
+/*
+    public int countHoses(){
+        for (String s: properties) {
+            if(){
 
+            }
+        }
+    }
+*/
     @Override
     public String toString() {
         return "Dati "+pawn +":\nPosizione: "+position+"\nConto: "+bill+"€"+"\nCaselle in tuo possesso:\n"+properties+"\n";
