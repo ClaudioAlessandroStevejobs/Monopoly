@@ -2,7 +2,7 @@ package sample;
 
 public class Box {
     public enum Type{PROPERTY, PRISON, GO, GO_TO_PRISON, PARKING, CHANCE, TAX, SOCIETY, STATION}
-    public enum Color{RED, YELLOW, BLUE, LIGHT_BLUE, GREEN, ORANGE, PURPLE, BROWN, NONE}
+    public enum Color{RED, YELLOW, BLUE, LIGHT_BLUE, GREEN, ORANGE, PURPLE, BROWN}
     private int price;
     private int mortgageCost;
     private String name = "";
@@ -11,6 +11,7 @@ public class Box {
     private Color color;
     private boolean buildable;
     private boolean mortgaged;
+
 
     // Costruttore per le proprietà
     public Box(Type type, Color color, int price, String name) {

@@ -15,7 +15,8 @@ public class MainConsole {
 
             do {
                 System.out.println("Quanti giocatori partecipano? (2-6)");
-                playerNum = input.nextInt();if (playerNum <= 1 || playerNum > 6) {
+                playerNum = input.nextInt();
+                if (playerNum <= 1 || playerNum > 6) {
                     System.out.println("Errore!");
                 }
             }while(playerNum <= 1 || playerNum > 6);
@@ -25,15 +26,22 @@ public class MainConsole {
         /* SET PEDINE, RICORDA TRY CATCH */
         ArrayList<Player.Pawn> availablePawns = Player.getPawnArray();
         for (int k = 0; k<playerNum; k++) {
-            System.out.println("Giocatore "+(k+1)+":\nScegli la pedina tra queste:");
-            for (int j = 0; j < availablePawns.size(); j++) {
-                System.out.println((j+1)+" - "+ availablePawns.get(j));
-            }
             int choice;
-            choice = input.nextInt();
+            do {
+                System.out.println("Giocatore "+(k+1)+":\nScegli la pedina tra queste:");
+                for (int j = 0; j < availablePawns.size(); j++) {
+                    System.out.println((j+1)+" - "+ availablePawns.get(j));
+                }
+                choice = input.nextInt();
+                if (choice < 1 || choice > availablePawns.size()) {
+                    System.out.println("Errore!");
+                }
+            }while(choice < 1 || choice > availablePawns.size());
             players[k]= new Player(availablePawns.get(choice-1));
             System.out.println("Il giocatore "+(k+1)+" ha scelto "+availablePawns.get(choice-1)+"!\n");
             availablePawns.remove(choice-1);
+
+
         }
 
         //MESCOLAMENTO GIOCATORI f
@@ -55,7 +63,7 @@ public class MainConsole {
                 if (!player.getPrisoner())  {
                     player.movement((dice1 + dice2));
                     Box.Type type = m.field[player.getPosition()].getType();
-                    System.out.println("Sei su "+ m.field[player.getPosition()].getName()+"\n");
+                    System.out.println("Sei su "+ m.field[player.getPosition()].getName());
                     switch (type){
                         case PROPERTY:
                         case SOCIETY:
@@ -67,7 +75,7 @@ public class MainConsole {
                             }
                             //se la proprietà è libera
                             else if (m.isPropertyFree(players, m.field[player.getPosition()].getName())) {
-                                System.out.println("Questa proprietà è libera");
+                                System.out.println("Questa proprietà è libera e costa "+m.field[player.getPosition()].getPrice());
                                 //controlla se hai i soldi, se non ce li hai imposta direttamente di andare all'asta
                                 if (player.getBill() < m.field[player.getPosition()].getPrice()) {
                                     System.out.println("Non hai i soldi per comprala");
@@ -104,73 +112,80 @@ public class MainConsole {
                                             int price = m.field[player.getPosition()].getPrice();
 
                                             do {
-                                                for (Player auctionPlayer : auctionPlayers) {
-                                                    int raise;
-                                                    System.out.println(auctionPlayers.size());
-                                                    if (auctionPlayers.size()==1 && auctionPlayer.getPawn() == lastAuctionPlayer) {
-                                                        auctionPlayer.payment(price);
-                                                        auctionPlayer.addProperty(m.field[player.getPosition()].getName());
-                                                        System.out.println(auctionPlayer.getPawn() + " si è aggiudicato " + m.field[player.getPosition()].getName() + " per " + price + " euro");
-                                                        auctionExit = true;
-                                                        break;
-                                                    }
-                                                    //controllo se puoi puntare già di base o no
-                                                    if (!auctionPlayer.payment(m.field[player.getPosition()].getPrice())) {
-                                                        auctionPlayer.payment(-m.field[player.getPosition()].getPrice());
-                                                        System.out.println(auctionPlayer.getPawn() + " non può pagare!");
-                                                        auctionPlayers.remove(auctionPlayer);
-                                                        continue;
-                                                    }
-                                                    auctionPlayer.payment(-m.field[player.getPosition()].getPrice());
-                                                    do {
-                                                        System.out.println("\n"+auctionPlayer.toString());
-                                                        //solo nel primo turno
-                                                        System.out.println("Ultima puntata:");
-                                                        if (lastAuctionPlayer != null) {
-                                                            System.out.println("Giocatore: "+lastAuctionPlayer);
+                                                for (Player auctionPlayer: auctionPlayers) {
+                                                    int outOfAuctionPlayerNum = 0;
+                                                    for (Player nonePlayer: auctionPlayers) {
+                                                        if (nonePlayer.isOutOfAuction()) {
+                                                            outOfAuctionPlayerNum ++;
                                                         }
-                                                        System.out.println("Prezzo attuale: " + price + "\nrilancia (oppure scrivi 0 per lasciare)");
-                                                        raise = input.nextInt();
-                                                        if ((raise != 0 && raise <= price)||raise>auctionPlayer.getBill())
-                                                            System.out.println("errore");
-                                                    } while ((raise != 0 && raise <= price)||raise>auctionPlayer.getBill());
-
-                                                    if (auctionPlayers.size()==1 && raise == 0) {
-                                                        System.out.println("\n"+m.field[player.getPosition()].getName() + " rimane libera!\n");
-                                                        auctionExit = true;
-                                                        break;
-                                                    }
-                                                    if (raise == 0) {
-                                                        auctionPlayers.remove(auctionPlayer);
-                                                        continue;
                                                     }
 
-                                                    price = raise;
-                                                    lastAuctionPlayer = auctionPlayer.getPawn();
+                                                    if (auctionPlayer.getPawn() != Player.Pawn.NONE) {
 
+                                                        int raise;
+                                                        if ((auctionPlayers.size()-1==outOfAuctionPlayerNum) && auctionPlayer.getPawn() == lastAuctionPlayer) {
+                                                            auctionPlayer.payment(price);
+                                                            auctionPlayer.addProperty(m.field[player.getPosition()].getName());
+                                                            System.out.println(auctionPlayer.getPawn() + " si è aggiudicato " + m.field[player.getPosition()].getName() + " per " + price + " euro");
+                                                            auctionExit = true;
+                                                            break;
+                                                        }
+                                                        //controllo se puoi puntare già di base o no
+                                                        if (!auctionPlayer.payment(m.field[player.getPosition()].getPrice())) {
+                                                            auctionPlayer.payment(-m.field[player.getPosition()].getPrice());
+                                                            System.out.println(auctionPlayer.getPawn() + " non può pagare!");
+                                                            auctionPlayer.setOutOfAuction(true);
+                                                            continue;
+                                                        }
+                                                        auctionPlayer.payment(-m.field[player.getPosition()].getPrice());
+                                                        do {
+                                                            System.out.println("\n"+auctionPlayer.toString());
+                                                            //solo nel primo turno
+                                                            System.out.println("Ultima puntata:");
+                                                            if (lastAuctionPlayer != null) {
+                                                                System.out.println("Giocatore: "+lastAuctionPlayer);
+                                                            }
+                                                            System.out.println("Prezzo attuale: " + price + "\nrilancia (oppure scrivi 0 per lasciare)");
+                                                            raise = input.nextInt();
+                                                            if ((raise != 0 && raise <= price)||raise>auctionPlayer.getBill())
+                                                                System.out.println("errore");
+                                                        } while ((raise != 0 && raise <= price)||raise>auctionPlayer.getBill());
+
+                                                        if ((auctionPlayers.size()-1==outOfAuctionPlayerNum) && raise == 0) {
+                                                            System.out.println("\n"+m.field[player.getPosition()].getName() + " rimane libera!\n");
+                                                            auctionExit = true;
+                                                            break;
+                                                        }
+                                                        if (raise == 0) {
+                                                            auctionPlayer.setOutOfAuction(true);
+                                                        } else {
+                                                            price = raise;
+                                                            lastAuctionPlayer = auctionPlayer.getPawn();
+                                                        }
+                                                    }
                                                 }
                                             } while (!auctionExit);
-
+                                            for (Player nonePlayer: auctionPlayers) {
+                                                if (nonePlayer.isOutOfAuction()) {
+                                                    nonePlayer.setOutOfAuction(false);
+                                                }
+                                            }
                                             break;
                                     }
                                 } else {
                                     if (type.equals(Box.Type.PROPERTY)) {
-                                        /*tanto per mostrare i soldi*/System.out.println(player.getBill());
                                         System.out.println("Devi pagare "+m.field[player.getPosition()].getPropertyTax()+" euri");
                                         if (!player.payment(m.field[player.getPosition()].getPropertyTax())) {
                                             //scelte robe da ipotecare?, magari mettiamo un booleano per entrare in un menù di ipoteca DOPO questo switch? ho aggiunto anche la booleana alle box "mortgaged"
                                             System.out.println("ma non puoi pagare");
                                         }
-                                        /*tanto per mostrare i soldi*/System.out.println(player.getBill());
                                     }
                                     else if (type.equals(Box.Type.STATION)) {
-                                        /*tanto per mostrare i soldi*/System.out.println(player.getBill());
                                         System.out.println("Devi pagare "+m.getStationTax(player.getProperties())+" euri");
                                         if (!player.payment(m.getStationTax(player.getProperties()))) {
                                             //scelte robe da ipotecare?, magari mettiamo un booleano per entrare in un menù di ipoteca DOPO questo switch? ho aggiunto anche la booleana alle box "mortgaged"
                                             System.out.println("ma non puoi pagare");
                                         }
-                                        /*tanto per mostrare i soldi*/System.out.println(player.getBill());
                                     }
 
                                 }

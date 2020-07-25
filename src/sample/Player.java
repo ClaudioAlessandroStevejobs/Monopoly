@@ -4,13 +4,14 @@ import java.util.ArrayList;
 
 public class Player {
 
-    public enum Pawn{ARANCINO, ELEFANTE, CAVALLINO, CANNOLO, CASSATA, VULCANO}
+    public enum Pawn{ARANCINO, ELEFANTE, CAVALLINO, CANNOLO, CASSATA, VULCANO, NONE}
     private Pawn pawn;
     private ArrayList<String> properties = new ArrayList<>();
     private int bill = 2000;
     private short position = 0;
     private boolean prisoner;
     private boolean canEscapeFromPrison;
+    private boolean outOfAuction;
 
     public Player(){
     }
@@ -94,6 +95,14 @@ public class Player {
     }
     public boolean getCanEscapeFromPrison(){
         return canEscapeFromPrison;
+    }
+
+    public void setOutOfAuction(boolean outOfAuction) {
+        this.outOfAuction = outOfAuction;
+    }
+
+    public boolean isOutOfAuction() {
+        return outOfAuction;
     }
 
     @Override
