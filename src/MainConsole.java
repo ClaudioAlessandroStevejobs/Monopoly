@@ -54,7 +54,6 @@ public class MainConsole {
                     char choiceYesOrNot;
                     System.out.println("E' il turno di " + player.getPawn() + ":\nLa tua posizione attuale è " + player.getPosition());
                     System.out.println(player.toString());
-                    System.out.println(player.toString());
                     System.out.println(m.stringBoard(player));
                     Thread.sleep(1000);
                     int dice1 = m.rollDice();
@@ -429,7 +428,7 @@ public class MainConsole {
                         ArrayList<String> activeProperties = m.getActiveProperties(player.getProperties());
                         String activeListOutput = "";
                         for (int k = 0; k < activeProperties.size(); k++) {
-                            activeListOutput += ((k+1)+" - "+activeProperties.get(k));
+                            activeListOutput += ((k+1)+" - "+activeProperties.get(k)+"\n");
                         }
 
                         do {
@@ -446,7 +445,7 @@ public class MainConsole {
                         ArrayList<String> mortgagedProperties = m.getMortgagedProperties(player.getProperties());
                         String mortgagedListOutput = "";
                         for (int k = 0; k < mortgagedProperties.size(); k++) {
-                            mortgagedListOutput += ((k+1)+" - "+mortgagedProperties.get(k));
+                            mortgagedListOutput += ((k+1)+" - "+mortgagedProperties.get(k)+"\n");
                         }
                         do {
                             System.out.println("Elenco proprietà ipotecate:\n"+mortgagedListOutput);

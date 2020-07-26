@@ -28,13 +28,13 @@ public class Monopoly {
                     field[i] = new Box(Box.Type.GO, "Via");
                     break;
                 case 1:
-                    field[i] = new Box(Box.Type.PROPERTY, Box.Color.BROWN, 60, "Via Plebiscito");
+                    field[i] = new Box(Box.Type.PROPERTY, Box.Color.GREY, 60, "Via Plebiscito");
                     break;
                 case 2:
                     field[i] = new Box(Box.Type.CHANCE, "Probabilità");
                     break;
                 case 3:
-                    field[i] = new Box(Box.Type.PROPERTY, Box.Color.BROWN, 60, "Piazza Santa Maria di Gesù");
+                    field[i] = new Box(Box.Type.PROPERTY, Box.Color.GREY, 60, "Piazza Santa Maria di Gesù");
                     break;
                 case 4:
                     field[i] = new Box(Box.Type.TAX, "Tassa patrimoniale");
@@ -43,16 +43,16 @@ public class Monopoly {
                     field[i] = new Box(Box.Type.STATION, 200, "Stazione Cibali");
                     break;
                 case 6:
-                    field[i] = new Box(Box.Type.PROPERTY, Box.Color.LIGHT_BLUE, 100, "Stadio Massimino");
+                    field[i] = new Box(Box.Type.PROPERTY, Box.Color.CYAN, 100, "Stadio Massimino");
                     break;
                 case 7:
                     field[i] = new Box(Box.Type.CHANCE, "Imprevisti");
                     break;
                 case 8:
-                    field[i] = new Box(Box.Type.PROPERTY, Box.Color.LIGHT_BLUE, 100, "Scuola Principe Umberto");
+                    field[i] = new Box(Box.Type.PROPERTY, Box.Color.CYAN, 100, "Scuola Principe Umberto");
                     break;
                 case 9:
-                    field[i] = new Box(Box.Type.PROPERTY, Box.Color.LIGHT_BLUE, 120,  "Parco Gandhi");
+                    field[i] = new Box(Box.Type.PROPERTY, Box.Color.CYAN, 120,  "Parco Gandhi");
                     break;
                 case 10:
                     field[i] = new Box(Box.Type.PRISON, "Piazza Lanza");
@@ -73,16 +73,16 @@ public class Monopoly {
                     field[i] = new Box(Box.Type.STATION, 200,  "Stazione Stesicoro");
                     break;
                 case 16:
-                    field[i] = new Box(Box.Type.PROPERTY, Box.Color.ORANGE, 180, "Piazza Cavour");
+                    field[i] = new Box(Box.Type.PROPERTY, Box.Color.WHITE, 180, "Piazza Cavour");
                     break;
                 case 17:
                     field[i] = new Box(Box.Type.CHANCE, "Probabilità");
                     break;
                 case 18:
-                    field[i] = new Box(Box.Type.PROPERTY, Box.Color.ORANGE, 180, "Parco Vulcania");
+                    field[i] = new Box(Box.Type.PROPERTY, Box.Color.WHITE, 180, "Parco Vulcania");
                     break;
                 case 19:
-                    field[i] = new Box(Box.Type.PROPERTY, Box.Color.ORANGE, 200, "Orto botanico");
+                    field[i] = new Box(Box.Type.PROPERTY, Box.Color.WHITE, 200, "Orto botanico");
                     break;
                 case 20:
                     field[i] = new Box(Box.Type.PARKING, "Parcheggio Jail");
@@ -203,7 +203,7 @@ public class Monopoly {
         // Controllo delle combo per i colori del giocatore
         for (Map.Entry c: colors.entrySet()) {
             if(c.getValue().equals(2) && (c.getKey().equals(Box.Color.BLUE)
-                    || c.getKey().equals(Box.Color.BROWN))){
+                    || c.getKey().equals(Box.Color.GREY))){
                 comboColors.add((Box.Color) c.getKey());
             }
             else if(c.getValue().equals(3)){
@@ -525,13 +525,13 @@ public class Monopoly {
                     case RED:
                         result += "\u001B[31m" + "o " + "\u001B[0m";
                         break;
-                    case BROWN:
+                    case GREY:
                         result += "\u001B[37m" + "o " + "\u001B[0m";
                         break;
                     case GREEN:
                         result += "\u001B[32m" + "o " + "\u001B[0m";
                         break;
-                    case ORANGE:
+                    case WHITE:
                         result += "\u001B[30m" + "o " + "\u001B[0m";
                         break;
                     case PURPLE:
@@ -540,7 +540,7 @@ public class Monopoly {
                     case YELLOW:
                         result += "\u001B[33m" + "o " + "\u001B[0m";
                         break;
-                    case LIGHT_BLUE:
+                    case CYAN:
                         result += "\u001B[36m" + "o " + "\u001B[0m";
                         break;
                     default:

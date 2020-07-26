@@ -1,10 +1,8 @@
 package sample;
 
-import java.util.function.BinaryOperator;
-
 public class Box {
     public enum Type{PROPERTY, PRISON, GO, GO_TO_PRISON, PARKING, CHANCE, TAX, SOCIETY, STATION}
-    public enum Color{RED, YELLOW, BLUE, LIGHT_BLUE, GREEN, ORANGE, PURPLE, BROWN, NONE}
+    public enum Color{RED, YELLOW, BLUE, CYAN, GREEN, WHITE, PURPLE, GREY, NONE}
     private int price;
     private int mortgageCost;
     private String name = "";
@@ -61,17 +59,17 @@ public class Box {
                 return  "\u001B[34m" + name + "\u001B[0m";
             case RED:
                 return "\u001B[31m" + name + "\u001B[0m";
-            case BROWN:
+            case GREY:
                 return "\u001B[37m" + name + "\u001B[0m";
             case GREEN:
                 return "\u001B[32m" + name + "\u001B[0m";
-            case ORANGE:
+            case WHITE:
                 return "\u001B[30m" + name + "\u001B[0m";
             case PURPLE:
                 return "\u001B[35m" + name + "\u001B[0m";
             case YELLOW:
                 return "\u001B[33m" + name + "\u001B[0m";
-            case LIGHT_BLUE:
+            case CYAN:
                 return "\u001B[36m" + name + "\u001B[0m";
             default:
                 return name;
@@ -85,10 +83,10 @@ public class Box {
         this.houses = houses;
     }
     public int getHouseCost() {
-        if (color.equals(Color.BROWN) || color.equals(Color.LIGHT_BLUE)) {
+        if (color.equals(Color.GREY) || color.equals(Color.CYAN)) {
             return 50;
         }
-        if (color.equals(Color.PURPLE) || color.equals(Color.ORANGE)) {
+        if (color.equals(Color.PURPLE) || color.equals(Color.WHITE)) {
             return 100;
         }
         if (color.equals(Color.RED) || color.equals(Color.YELLOW)) {
@@ -125,17 +123,17 @@ public class Box {
                 return "\u001B[34m" + name + "\u001B[0m";
             case RED:
                 return "\u001B[31m" + name + "\u001B[0m";
-            case BROWN:
+            case GREY:
                 return "\u001B[37m" + name + "\u001B[0m";
             case GREEN:
                 return "\u001B[32m" + name + "\u001B[0m";
-            case ORANGE:
+            case WHITE:
                 return "\u001B[30m" + name + "\u001B[0m";
             case PURPLE:
                 return "\u001B[35m" + name + "\u001B[0m";
             case YELLOW:
                 return "\u001B[33m" + name + "\u001B[0m";
-            case LIGHT_BLUE:
+            case CYAN:
                 return "\u001B[36m" + name + "\u001B[0m";
             default:
                 return name;
