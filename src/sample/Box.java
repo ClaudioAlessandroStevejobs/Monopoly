@@ -25,10 +25,6 @@ public class Box {
         this.buildable = false;
 
     }
-    // Costruttore angoli
-    public Box(Type type){
-        this.type = type;
-    }
     // Costruttore tasse
     public Box(Type type, String name){
         this.type = type;
@@ -60,7 +56,26 @@ public class Box {
         return houses;
     }
     public String getName() {
-        return name;
+        switch (getColor()) {
+            case BLUE:
+                return  "\u001B[34m" + name + "\u001B[0m";
+            case RED:
+                return "\u001B[31m" + name + "\u001B[0m";
+            case BROWN:
+                return "\u001B[37m" + name + "\u001B[0m";
+            case GREEN:
+                return "\u001B[32m" + name + "\u001B[0m";
+            case ORANGE:
+                return "\u001B[30m" + name + "\u001B[0m";
+            case PURPLE:
+                return "\u001B[35m" + name + "\u001B[0m";
+            case YELLOW:
+                return "\u001B[33m" + name + "\u001B[0m";
+            case LIGHT_BLUE:
+                return "\u001B[36m" + name + "\u001B[0m";
+            default:
+                return name;
+        }
     }
     public Type getType() {
         return type;
@@ -103,16 +118,28 @@ public class Box {
         return mortgaged;
     }
 
-    /* metodo per comprare una o più case nella proprietà,
-        vuole in input il numero di case da voler comprare ed il fondo del giocatore,
-        ritorna il prezzo da pagare SOLO quando il pagamento è fattibile, quindi andato a buon fine. */
-
-    public int housesPurchase(short housesNumber, int playerBill) {
-        if (getHouseCost() * housesNumber <= playerBill) {
-            houses = housesNumber;
-            return getHouseCost() * housesNumber;
+    @Override
+    public String toString() {
+        switch (getColor()){
+            case BLUE:
+                return "\u001B[34m" + name + "\u001B[0m";
+            case RED:
+                return "\u001B[31m" + name + "\u001B[0m";
+            case BROWN:
+                return "\u001B[37m" + name + "\u001B[0m";
+            case GREEN:
+                return "\u001B[32m" + name + "\u001B[0m";
+            case ORANGE:
+                return "\u001B[30m" + name + "\u001B[0m";
+            case PURPLE:
+                return "\u001B[35m" + name + "\u001B[0m";
+            case YELLOW:
+                return "\u001B[33m" + name + "\u001B[0m";
+            case LIGHT_BLUE:
+                return "\u001B[36m" + name + "\u001B[0m";
+            default:
+                return name;
         }
-        return 0;
     }
 
 }

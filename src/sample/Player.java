@@ -4,7 +4,8 @@ import java.util.ArrayList;
 
 public class Player {
 
-    public enum Pawn{ARANCINO, ELEFANTE, CAVALLINO, CANNOLO, CASSATA, VULCANO, NONE}
+    public enum Pawn {ARANCINO, ELEFANTE, CAVALLINO, CANNOLO, CASSATA, VULCANO, NONE}
+
     private Pawn pawn;
     private ArrayList<String> properties = new ArrayList<>();
     private int bill = 2000;
@@ -15,10 +16,10 @@ public class Player {
     private short prisonTurns = 0;
     private boolean loser = false;
 
-    public Player(){
+    public Player() {
     }
 
-    public Player(Pawn pawn){
+    public Player(Pawn pawn) {
         this.pawn = pawn;
         this.prisoner = false;
         this.canEscapeFromPrison = false;
@@ -26,27 +27,25 @@ public class Player {
 
     public void movement(int increasePosition) {
         this.position += increasePosition;
-        if (this.position >= 40){
-            if (this.position > 40){
+        if (this.position >= 40) {
+            if (this.position > 40) {
                 this.bill += 500;
             }
             this.position -= 40;
         }
     }
 
-    public boolean checkProprieties(String boxName){
-        if (properties.contains(boxName)){
+    public boolean checkProprieties(String boxName) {
+        if (properties.contains(boxName)) {
             return true;
-        }
-        else return false;
+        } else return false;
     }
 
     public boolean payment(int tax) {
         if (this.bill - tax < 0) {
             setLoser(true);
             return false;
-        }
-        else {
+        } else {
             this.bill -= tax;
             return true;
         }
@@ -59,60 +58,75 @@ public class Player {
     public void setPosition(short position) {
         this.position = position;
     }
+
     public short getPosition() {
         return position;
     }
+
     public int getBill() {
         return bill;
     }
+
     public void setPawn(Pawn pawn) {
         this.pawn = pawn;
     }
+
     public Pawn getPawn() {
         return pawn;
     }
+
     public ArrayList<String> getProperties() {
         return properties;
     }
+
     public static ArrayList<Pawn> getPawnArray() {
         ArrayList<Pawn> pawns = new ArrayList<Pawn>() {{
-                add(Pawn.ELEFANTE);
-                add(Pawn.CANNOLO);
-                add(Pawn.ARANCINO);
-                add(Pawn.CAVALLINO);
-                add(Pawn.VULCANO);
-                add(Pawn.CASSATA);
-            }};
+            add(Pawn.ELEFANTE);
+            add(Pawn.CANNOLO);
+            add(Pawn.ARANCINO);
+            add(Pawn.CAVALLINO);
+            add(Pawn.VULCANO);
+            add(Pawn.CASSATA);
+        }};
         return pawns;
     }
 
     public void setPrisoner(boolean prisoner) {
         this.prisoner = prisoner;
     }
-    public boolean isPrisoner(){
+
+    public boolean isPrisoner() {
         return prisoner;
     }
+
     public void setCanEscapeFromPrison(boolean canEscapeFromPrison) {
         this.canEscapeFromPrison = canEscapeFromPrison;
     }
-    public boolean isCanEscapeFromPrison(){
+
+    public boolean isCanEscapeFromPrison() {
         return canEscapeFromPrison;
     }
+
     public void setOutOfAuction(boolean outOfAuction) {
         this.outOfAuction = outOfAuction;
     }
+
     public boolean isOutOfAuction() {
         return outOfAuction;
     }
+
     public void setPrisonTurns(short prisonTurns) {
         this.prisonTurns = prisonTurns;
     }
+
     public short getPrisonTurns() {
         return prisonTurns;
     }
+
     public void setLoser(boolean loser) {
         this.loser = loser;
     }
+
     public boolean isLoser() {
         return loser;
     }

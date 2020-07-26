@@ -512,51 +512,42 @@ public class Monopoly {
 
     public String stringBoard(Player player) {
         String result = "";
-        /*int i;
-        int j = 0;
-        for (i = 0; i<11; i++){
-            result += "o  ";
-            j++;
-        }
-        for (i = 9; i>0; i--){
-            result += "\no                             o  ";
-        }
-        result += "\n";
-        for (i = 0; i < 11; i++){
-            result += "o  ";
-        }
-        result += "\n";
-        return result;*/
-
-        for (int i = 0; i<40; i++){
-            if (i == player.getPosition()){
-                switch (player.getPawn()){
-                    case CANNOLO:
-                        result += "\u001B[31mo \u001B[0m";
+        for (Box b : field) {
+            if (b.equals(field[player.getPosition()])) {
+                result += "X ";
+            } else if (b.getType().equals(Box.Type.GO)) {
+                result += "> ";
+            }else {
+                switch (b.getColor()) {
+                    case BLUE:
+                        result += "\u001B[34m" + "o " + "\u001B[0m";
                         break;
-                    case CASSATA:
-                        result += "\u001B[32mo \u001B[0m";
+                    case RED:
+                        result += "\u001B[31m" + "o " + "\u001B[0m";
                         break;
-                    case VULCANO:
-                        result += "\u001B[33mo \u001B[0m";
+                    case BROWN:
+                        result += "\u001B[37m" + "o " + "\u001B[0m";
                         break;
-                    case ARANCINO:
-                        result += "\u001B[34mo \u001B[0m";
+                    case GREEN:
+                        result += "\u001B[32m" + "o " + "\u001B[0m";
                         break;
-                    case ELEFANTE:
-                        result += "\u001B[35mo \u001B[0m";
+                    case ORANGE:
+                        result += "\u001B[30m" + "o " + "\u001B[0m";
                         break;
-                    case CAVALLINO:
-                        result += "\u001B[36mo \u001B[0m";
+                    case PURPLE:
+                        result += "\u001B[35m" + "o " + "\u001B[0m";
                         break;
+                    case YELLOW:
+                        result += "\u001B[33m" + "o " + "\u001B[0m";
+                        break;
+                    case LIGHT_BLUE:
+                        result += "\u001B[36m" + "o " + "\u001B[0m";
+                        break;
+                    default:
+                        result += "o ";
                 }
             }
-            else {
-                result += "o ";
-            }
         }
-        result += "\n";
-        return result;
+        return result += "\n";
     }
-
 }

@@ -20,7 +20,6 @@ public class MainConsole {
 
         Player[] players = new Player[playerNum];
 
-        /* SET PEDINE, RICORDA TRY CATCH */
         ArrayList<Player.Pawn> availablePawns = Player.getPawnArray();
         for (int k = 0; k<playerNum; k++) {
             int choice;
@@ -38,8 +37,7 @@ public class MainConsole {
             System.out.println("Il giocatore "+(k+1)+" ha scelto "+availablePawns.get(choice-1)+"!\n");
             availablePawns.remove(choice-1);
         }
-
-        //MESCOLAMENTO GIOCATORI f
+        //MESCOLAMENTO GIOCATORI
         players = m.shuffle(players);
 
         do {
@@ -56,6 +54,7 @@ public class MainConsole {
                     char choiceYesOrNot;
                     System.out.println("E' il turno di " + player.getPawn() + ":\nLa tua posizione attuale è " + player.getPosition());
                     System.out.println(player.toString());
+                    System.out.println(player.toString());
                     System.out.println(m.stringBoard(player));
                     Thread.sleep(1000);
                     int dice1 = m.rollDice();
@@ -63,7 +62,6 @@ public class MainConsole {
                     System.out.println("Tiri il dado!");
                     Thread.sleep(2000);
                     System.out.println("Sono usciti " + dice1 + " e " + dice2);
-                    //FARE LA ROBA SE E' DOPPIO
                     if (dice1 == dice2) {
                         System.out.println("Hai fatto doppio!");
                         doubleDice++;
@@ -137,7 +135,6 @@ public class MainConsole {
                                                             outOfAuctionPlayerNum++;
                                                         }
                                                     }
-                                                    //System.out.println("giocatori usciti "+outOfAuctionPlayerNum);
                                                     if (!auctionPlayer.isOutOfAuction()) {
 
                                                         int raise;
@@ -411,12 +408,10 @@ public class MainConsole {
                                     System.out.println("Errore!\nInserisci un valore corretto!");
 
                                 } else if (housesNumChoice + m.field[m.getPositionFromName(m.getNamesFromColor(m.comboBuildableColors(player.getProperties()).get(zoneChoice-1)).get(0))].getHouses() > 5) {
-                                    //m.field[m.getPositionFromName(m.getNamesFromColor(m.comboBuildableColors(player.getProperties()).get(secondChoice)).get(0))].getHouses()
                                     //è il numero di case della prima casella del colore scelto
                                     System.out.println("Non puoi costruire 6 case!");
                                     housesNumChoice = 0;
                                 } else if (m.field[m.getPositionFromName(m.getNamesFromColor(m.comboBuildableColors(player.getProperties()).get(zoneChoice-1)).get(0))].getHouseCost() * housesNumChoice > player.getBill()) {
-                                    //m.field[m.getPositionFromName(m.getNamesFromColor(m.comboBuildableColors(player.getProperties()).get(secondChoice)).get(0))].getHouseCost()
                                     //è il numero di case della prima casella del colore scelto
                                     System.out.println("Non hai i soldi per costruire "+housesNumChoice+"!");
                                     housesNumChoice = 0;
