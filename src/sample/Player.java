@@ -12,6 +12,7 @@ public class Player {
     private boolean prisoner;
     private boolean canEscapeFromPrison;
     private boolean outOfAuction;
+    private short prisonTurns = 0;
 
     public Player(){
     }
@@ -96,23 +97,19 @@ public class Player {
     public boolean getCanEscapeFromPrison(){
         return canEscapeFromPrison;
     }
-
     public void setOutOfAuction(boolean outOfAuction) {
         this.outOfAuction = outOfAuction;
     }
-
     public boolean isOutOfAuction() {
         return outOfAuction;
     }
-/*
-    public int countHoses(){
-        for (String s: properties) {
-            if(){
-
-            }
-        }
+    public void setPrisonTurns(short prisonTurns) {
+        this.prisonTurns = prisonTurns;
     }
-*/
+    public short getPrisonTurns() {
+        return prisonTurns;
+    }
+
     @Override
     public String toString() {
         return "Dati "+pawn +":\nPosizione: "+position+"\nConto: "+bill+"€"+"\nCaselle in tuo possesso:\n"+properties+"\n";

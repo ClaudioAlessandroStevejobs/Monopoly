@@ -303,28 +303,13 @@ public class Monopoly {
                 return "Il posteggiatore ti ferma, non hai monetine " +
                         "\nquindi cerchi parcheggio due caselle più avanti";
             case 17:
-
+                player.payment(60* countHousesAndHotels(player)[0] + 250* countHousesAndHotels(player)[1]);
                 return "Avete tutti i vostri stabili da riparare: " +
                         "pagare 60 euro per ogni casa e 250 per ogni albergo.";
             case 18:
-            case 19:
-            case 20:
-            case 21:
-            case 22:
-            case 23:
-            case 24:
-            case 25:
-            case 26:
-            case 27:
-            case 28:
-            case 29:
-            case 30:
-            case 31:
-            case 32:
-            case 33:
-            case 34:
-            case 35:
-
+                player.payment(100* countHousesAndHotels(player)[0] + 250* countHousesAndHotels(player)[1]);
+                return "Dovete pagare un contributo di miglioriastradale per una gara di cavalli, " +
+                        "\n100 per ogni casa, 250 euro per ogni albergo che possedete";
         }
         return null;
     }
@@ -449,13 +434,23 @@ public class Monopoly {
         }
         return 0;
     }
-/*
-        public int countHouses(Player player){
-            for (String s: player.getProperties()) {
 
+    public short[] countHousesAndHotels(Player player){
+    short playerHouses = 0;
+    short playerHotels = 0;
+        for (String s: player.getProperties()) {
+            for (Box b: field) {
+                if (b.getHouses() == 5){
+                    playerHotels++;
+                }
+                else if (s.equals(b.getName()) && b.getHouses()>0){
+                    playerHouses += b.getHouses();
+                }
             }
         }
-*/
+        return new short[]{playerHouses, playerHotels};
+    }
+
     public String stringBoard(Player player) {
         String result = "";
         /*int i;

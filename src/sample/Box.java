@@ -100,22 +100,6 @@ public class Box {
         return mortgaged;
     }
 
-    /*public int getNumberHousesOfProperties(Box box){
-        return box.houses;
-    }
-
-    public int countHouses(Player player){
-        for (String s: player.getProperties()) {
-
-            getNumberHousesOfProperties();
-        }
-    }
-
-    public Box getProprietiesFromName(String name){
-        name = getName();
-
-    }
-*/
     /* metodo per comprare una o più case nella proprietà,
         vuole in input il numero di case da voler comprare ed il fondo del giocatore,
         ritorna il prezzo da pagare SOLO quando il pagamento è fattibile, quindi andato a buon fine. */
