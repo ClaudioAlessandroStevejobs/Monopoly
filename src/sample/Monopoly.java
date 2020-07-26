@@ -445,15 +445,6 @@ public class Monopoly {
         return null;
     }
 
-    public int getPositionFromName(String s) {
-        for (int k = 0; k < field.length; k++) {
-            if (field[k].getName().equals(s)) {
-                return k;
-            }
-        }
-        return 0;
-    }
-
     public int getStationTax(ArrayList<String> playerProperties){
         short stationNumber = 0;
         for (String s: playerProperties) {

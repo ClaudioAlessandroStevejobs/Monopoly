@@ -9,8 +9,6 @@ public class MainConsole {
         Scanner input = new Scanner(System.in);
         Monopoly m = new Monopoly();
 
-        System.out.println("MONOPOLY 2020 CATANIA EDITION");
-
         /* SET GIOCATORI, RICORDA TRY CATCH */
         int playerNum = 0;
 
@@ -47,8 +45,6 @@ public class MainConsole {
 
         //MESCOLAMENTO GIOCATORI f
         players = m.shuffle(players);
-
-
 
         do {
             for (Player player : players) {
@@ -358,9 +354,9 @@ public class MainConsole {
                 int secondChoice;
 
                 do {
-                    System.out.println(player.getPawn()+", cosa vuoi fare?\n1) Costruisci\n2) Ipoteca una proprietà\n3) Ricompra una proprietà ipotecata\n4) Fine turno\n");
+                    System.out.println("Cosa vuoi fare?\n1) Costruisci\n2) Ipoteca una proprietà\n3) Ricompra una proprietà ipotecata\n4) Fine turno\n");
                     secondChoice = input.nextInt();
-                    if (secondChoice < 1 || secondChoice > 4) {
+                    if (secondChoice <= 1 || secondChoice > 4) {
                         System.out.println("Errore!");
                     }
                     if(secondChoice == 1 && !(m.comboBuildableColors(player.getProperties()).size()>0)) {
@@ -380,72 +376,21 @@ public class MainConsole {
 
                 switch (secondChoice) {
                     case 1:
-                        int zoneChoice;
-                        boolean whileExit = true;
-                        do {
-                            do {
-
-                                System.out.println("Scegli una zona:\nElenco zone:");
-                                for (int k = 0; k < m.comboBuildableColors(player.getProperties()).size(); k++) {
-                                    System.out.println((k+1)+") "+m.comboBuildableColors(player.getProperties()).get(k) + "ZONE");
-                                }
-                                System.out.println((m.comboBuildableColors(player.getProperties()).size()+1)+") Indietro");
-                                zoneChoice = input.nextInt();
-                                if (zoneChoice > m.comboBuildableColors(player.getProperties()).size()+1 || zoneChoice < 0) {
-                                    System.out.println("Errore!\nRiprova ad inserire un valore corretto.");
-                                }
-
-                            }while(zoneChoice > m.comboBuildableColors(player.getProperties()).size()+1 || zoneChoice < 0);
-
-                            if (zoneChoice == m.comboBuildableColors(player.getProperties()).size()+1) {
-                                break;
-                            }
-
-                            int housesNumChoice = 0;
-                            do {
-
-                                //condizione per cui se non puoi neanche costruire una casa allora non ti fa neanche scegliere
-                                if (m.field[m.getPositionFromName(m.getNamesFromColor(m.comboBuildableColors(player.getProperties()).get(zoneChoice-1)).get(0))].getHouseCost() > player.getBill()) {
-                                    //m.field[m.getPositionFromName(m.getNamesFromColor(m.comboBuildableColors(player.getProperties()).get(secondChoice)).get(0))].getHouseCost()
-                                    //è il numero di case della prima casella del colore scelto
-                                    System.out.println("Non hai i soldi per costruire neanche una casa!");
-                                    whileExit = false;
-                                    break;
-                                }
-
-                                System.out.println("In questa zona ci sono già "+ m.field[m.getPositionFromName(m.getNamesFromColor(m.comboBuildableColors(player.getProperties()).get(zoneChoice-1)).get(0))].getHouses()
-                                        +" case.\nQuante ne vuoi costruire in questa zona? (5 per un hotel)");
-                                System.out.println("");
-                                housesNumChoice = input.nextInt();
-
-                                if (housesNumChoice < 1 || housesNumChoice > 5) {
-                                    System.out.println("Errore!\nInserisci un valore corretto!");
-
-                                } else if (housesNumChoice + m.field[m.getPositionFromName(m.getNamesFromColor(m.comboBuildableColors(player.getProperties()).get(zoneChoice-1)).get(0))].getHouses() > 5) {
-                                    //m.field[m.getPositionFromName(m.getNamesFromColor(m.comboBuildableColors(player.getProperties()).get(secondChoice)).get(0))].getHouses()
-                                    //è il numero di case della prima casella del colore scelto
-                                    System.out.println("Non puoi costruire 6 case!");
-                                    housesNumChoice = 0;
-                                } else if (m.field[m.getPositionFromName(m.getNamesFromColor(m.comboBuildableColors(player.getProperties()).get(zoneChoice-1)).get(0))].getHouseCost() * housesNumChoice > player.getBill()) {
-                                    //m.field[m.getPositionFromName(m.getNamesFromColor(m.comboBuildableColors(player.getProperties()).get(secondChoice)).get(0))].getHouseCost()
-                                    //è il numero di case della prima casella del colore scelto
-                                    System.out.println("Non hai i soldi per costruire "+housesNumChoice+"!");
-                                    housesNumChoice = 0;
-                                }
-
-                            }while(housesNumChoice < 1 || housesNumChoice > 5);
-
-                            player.payment(m.field[m.getPositionFromName(m.getNamesFromColor(m.comboBuildableColors(player.getProperties()).get(zoneChoice-1)).get(0))].getHouseCost() * housesNumChoice);
-                            //con questa poesia sto settando il numero di case appena comprate
-                            m.field[m.getPositionFromName(m.getNamesFromColor(m.comboBuildableColors(player.getProperties()).get(zoneChoice-1)).get(0))].setHouses(
-                                    (short) (m.field[m.getPositionFromName(m.getNamesFromColor(m.comboBuildableColors(player.getProperties()).get(zoneChoice-1)).get(0))].getHouses()+housesNumChoice));
-                        }while(!whileExit);
+                        System.out.println("Elenco zone ");
+                        ArrayList<String> propertiesPerColor = new ArrayList<>();
+                        for (Box.Color c: m.comboBuildableColors(player.getProperties())) {
+                            System.out.println(c + "ZONE");
+                        }
+                        Box.Color[] colorsArray = m.comboBuildableColors(player.getProperties()).toArray(new Box.Color[0]);
+                        /*for (String s: m.getNamesFromColor(colorechesceglitu)) {
+                            System.out.println(s);
+                        }*/
                         break;
                     case 2:
                         ArrayList<String> activeProperties = m.getActiveProperties(player.getProperties());
                         String activeListOutput = "";
                         for (int k = 0; k < activeProperties.size(); k++) {
-                            activeListOutput += ((k+1)+" - "+activeProperties.get(k)+"\n");
+                            activeListOutput += ((k+1)+" - "+activeProperties.get(k));
                         }
 
                         do {
@@ -462,7 +407,7 @@ public class MainConsole {
                         ArrayList<String> mortgagedProperties = m.getMortgagedProperties(player.getProperties());
                         String mortgagedListOutput = "";
                         for (int k = 0; k < mortgagedProperties.size(); k++) {
-                            mortgagedListOutput += ((k+1)+" - "+mortgagedProperties.get(k)+"\n");
+                            mortgagedListOutput += ((k+1)+" - "+mortgagedProperties.get(k));
                         }
                         do {
                             System.out.println("Elenco proprietà ipotecate:\n"+mortgagedListOutput);

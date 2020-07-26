@@ -4,13 +4,13 @@ import java.util.function.BinaryOperator;
 
 public class Box {
     public enum Type{PROPERTY, PRISON, GO, GO_TO_PRISON, PARKING, CHANCE, TAX, SOCIETY, STATION}
-    public enum Color{RED, YELLOW, BLUE, LIGHT_BLUE, GREEN, ORANGE, PURPLE, BROWN, NONE}
+    public enum Color{RED, YELLOW, BLUE, LIGHT_BLUE, GREEN, ORANGE, PURPLE, BROWN}
     private int price;
     private int mortgageCost;
     private String name = "";
     private short houses;
     private Type type;
-    private Color color = Color.NONE;
+    private Color color;
     private boolean buildable;
     private boolean mortgaged;
 
@@ -65,11 +65,6 @@ public class Box {
     public Type getType() {
         return type;
     }
-
-    public void setHouses(short houses) {
-        this.houses = houses;
-    }
-
     public boolean isBuildable() {return buildable;}
     public int getHouseCost() {
         if (color.equals(Color.BROWN) || color.equals(Color.LIGHT_BLUE)) {
@@ -89,17 +84,15 @@ public class Box {
     public int getPropertyTax() {
         switch (houses) {
             case 0:
-                return price/4;
+                return price/6;
             case 1:
-                return price/2;
+                return price/4;
             case 2:
-                return (int) (price*1.5);
+                return price/2;
             case 3:
-                return price*3;
+                return price+50;
             case 4:
-                return price*4;
-            case 5:
-                return price*5;
+                return price+250;
         }
         return 0;
     }
@@ -107,5 +100,16 @@ public class Box {
         return mortgaged;
     }
 
+    /* metodo per comprare una o più case nella proprietà,
+        vuole in input il numero di case da voler comprare ed il fondo del giocatore,
+        ritorna il prezzo da pagare SOLO quando il pagamento è fattibile, quindi andato a buon fine. */
+
+    public int housesPurchase(short housesNumber, int playerBill) {
+        if (getHouseCost() * housesNumber <= playerBill) {
+            houses = housesNumber;
+            return getHouseCost() * housesNumber;
+        }
+        return 0;
+    }
 
 }
