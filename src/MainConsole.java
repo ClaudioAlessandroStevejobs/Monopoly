@@ -2,7 +2,6 @@ import sample.Box;
 import sample.Monopoly;
 import sample.Player;
 
-import java.lang.reflect.Array;
 import java.util.*;
 
 public class MainConsole {
@@ -49,10 +48,11 @@ public class MainConsole {
 
         do {
             for (Player player : players) {
+                if(player.isLoser()){
+                    continue;
+                }
                 short doubleDice = 0;
-
                 do {
-
                     char choiceYesOrNot;
                     System.out.println("E' il turno di " + player.getPawn() + ":\nLa tua posizione attuale è " + player.getPosition() + "\n");
                     Thread.sleep(1000);
@@ -71,7 +71,9 @@ public class MainConsole {
                         player.setPrisoner(true);
                         break;
                     }
-                    if (!player.getPrisoner()) {
+                    System.out.println(player.toString());
+                    System.out.println(m.stringBoard(player));
+                    if (!player.isPrisoner()) {
                         System.out.println("Ti muovi di " + (dice1 + dice2) + " caselle!\n");
                         player.movement((dice1 + dice2));
                         Box.Type type = m.field[player.getPosition()].getType();
@@ -185,20 +187,30 @@ public class MainConsole {
                                             break;
                                     }
                                 } else {
-                                    if (type.equals(Box.Type.PROPERTY)) {
-                                        System.out.println("Devi pagare " + m.field[player.getPosition()].getPropertyTax() + " euri");
-                                        if (!player.payment(m.field[player.getPosition()].getPropertyTax())) {
-                                            //scelte robe da ipotecare?, magari mettiamo un booleano per entrare in un menù di ipoteca DOPO questo switch? ho aggiunto anche la booleana alle box "mortgaged"
-                                            System.out.println("ma non puoi pagare");
-                                        }
-                                    } else if (type.equals(Box.Type.STATION)) {
-                                        System.out.println("Devi pagare " + m.getStationTax(player.getProperties()) + " euri");
-                                        if (!player.payment(m.getStationTax(player.getProperties()))) {
-                                            //scelte robe da ipotecare?, magari mettiamo un booleano per entrare in un menù di ipoteca DOPO questo switch? ho aggiunto anche la booleana alle box "mortgaged"
-                                            System.out.println("ma non puoi pagare");
+                                    if (!m.field[player.getPosition()].isMortgaged()){
+                                        if (type.equals(Box.Type.PROPERTY)) {
+                                            System.out.println("Devi pagare " + m.field[player.getPosition()].getPropertyTax() + " euri");
+                                            if (!player.payment(m.field[player.getPosition()].getPropertyTax())) {
+                                                m.setTaxFund(m.getTaxFund() + player.getBill());
+                                                System.out.println("ma non puoi pagare, " +
+                                                        "lasci tutti i tuoi beni nel fondocassa");
+                                            }
+                                        } else if (type.equals(Box.Type.STATION)) {
+                                            System.out.println("Devi pagare " + m.getStationTax(player.getProperties()) + " euri");
+                                            if (!player.payment(m.getStationTax(player.getProperties()))) {
+                                                m.setTaxFund(m.getTaxFund() + player.getBill());
+                                                System.out.println("ma non puoi pagare, " +
+                                                        "lasci tutti i tuoi beni nel fondocassa");
+                                            }
+                                        } else if (type.equals(Box.Type.SOCIETY)) {
+                                            System.out.println("Devi pagare " + m.getStationTax(player.getProperties()) + " euri");
+                                            if (!player.payment(m.getSocietyTax(player.getProperties(), dice1+dice2))) {
+                                                m.setTaxFund(m.getTaxFund() + player.getBill());
+                                                System.out.println("ma non puoi pagare, " +
+                                                        "lasci tutti i tuoi beni nel fondocassa");
+                                            }
                                         }
                                     }
-
                                 }
                                 break;
                             case GO:
@@ -216,13 +228,26 @@ public class MainConsole {
                                 System.out.println(m.chance(player));
                                 break;
                             case TAX:
-                                if (m.field[player.getPosition()].getName().equals("Patrimonial tax")) {
-                                    player.payment(200);
-                                    //sperando
-                                    m.setTaxFund(+200);
+                                if (m.field[player.getPosition()].getName().equals("Tassa patrimoniale")) {
+                                    System.out.println("Paghi 200 euro");
+                                    if (!player.payment(200)){
+                                        m.setTaxFund(m.getTaxFund() + player.getBill());
+                                        System.out.println("ma non puoi pagare, " +
+                                                "lasci tutti i tuoi beni nel fondocassa");
+                                    }
+                                    else {
+                                        m.setTaxFund(m.getTaxFund() + 200);
+                                    }
                                 } else {
-                                    player.payment(300);
-                                    m.setTaxFund(+300);
+                                    System.out.println("Paghi 300 euro");
+                                    if (!player.payment(300)){
+                                        m.setTaxFund(m.getTaxFund() + player.getBill());
+                                        System.out.println("ma non puoi pagare, " +
+                                                "lasci tutti i tuoi beni nel fondocassa");
+                                    }
+                                    else {
+                                        m.setTaxFund(m.getTaxFund() + 300);
+                                    }
                                 }
                                 break;
                         }
@@ -240,7 +265,7 @@ public class MainConsole {
                             do {
                                 System.out.println(player.toString());
                                 System.out.println("Sei in prigione, cosa vuoi fare?\n1) Paga 125 euro per uscire\n2) Rimani in prigione");
-                                if (player.getCanEscapeFromPrison()){
+                                if (player.isCanEscapeFromPrison()){
                                     System.out.println("3) Usa il cartellino per uscire\n");
                                 }
                                 prisonerChoice = input.nextInt();
@@ -270,19 +295,20 @@ public class MainConsole {
                                     break;
                             }
                         }
-                    }
-                    else {
-                        // fare menù ipoteca se non hai money
+                    } else {
                         player.setPrisoner(false);
-                        player.payment(125);
                         player.setPrisonTurns((short) 0);
                         System.out.println("Hai passato 3 turni in prigione, " +
                                 "devi pagare la tassa di 125 euro per uscire\n");
+                        if (!player.payment(125)){
+                            m.setTaxFund(m.getTaxFund() + player.getBill());
+                            System.out.println("ma non puoi pagare, " +
+                                    "lasci tutti i tuoi beni nel fondocassa");
+                        }
                     }
                 }while (doubleDice != 0);
                 int secondChoice;
                 do {
-                    System.out.println(player.toString());
                     System.out.println("Cosa vuoi fare?\n1) Costruisci\n2) Ipoteca una proprietà\n3) Ricompra una proprietà ipotecata\n4) Fine turno\n");
                     secondChoice = input.nextInt();
                     if (secondChoice <= 1 || secondChoice > 4) {
@@ -353,6 +379,6 @@ public class MainConsole {
                 }
 
             }
-        }while (m.getWin());
+        }while (!m.getWin(players));
     }
 }

@@ -13,6 +13,7 @@ public class Player {
     private boolean canEscapeFromPrison;
     private boolean outOfAuction;
     private short prisonTurns = 0;
+    private boolean loser = false;
 
     public Player(){
     }
@@ -42,6 +43,7 @@ public class Player {
 
     public boolean payment(int tax) {
         if (this.bill - tax < 0) {
+            setLoser(true);
             return false;
         }
         else {
@@ -84,17 +86,16 @@ public class Player {
         return pawns;
     }
 
-
     public void setPrisoner(boolean prisoner) {
         this.prisoner = prisoner;
     }
-    public boolean getPrisoner(){
+    public boolean isPrisoner(){
         return prisoner;
     }
     public void setCanEscapeFromPrison(boolean canEscapeFromPrison) {
         this.canEscapeFromPrison = canEscapeFromPrison;
     }
-    public boolean getCanEscapeFromPrison(){
+    public boolean isCanEscapeFromPrison(){
         return canEscapeFromPrison;
     }
     public void setOutOfAuction(boolean outOfAuction) {
@@ -109,9 +110,15 @@ public class Player {
     public short getPrisonTurns() {
         return prisonTurns;
     }
+    public void setLoser(boolean loser) {
+        this.loser = loser;
+    }
+    public boolean isLoser() {
+        return loser;
+    }
 
     @Override
     public String toString() {
-        return "Dati "+pawn +":\nPosizione: "+position+"\nConto: "+bill+"€"+"\nCaselle in tuo possesso:\n"+properties+"\n";
+        return "\nDati "+pawn +":\nPosizione: "+position+"\nConto: "+bill+"€"+"\nCaselle in tuo possesso:\n"+properties+"\n";
     }
 }

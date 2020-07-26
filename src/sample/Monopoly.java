@@ -213,8 +213,14 @@ public class Monopoly {
         return comboColors;
     }
 
-    public boolean getWin(){
-        return true;
+    public boolean getWin(Player[] players){
+        short losers = 0;
+        for (Player p: players) {
+            if (p.isLoser()){
+                losers++;
+            }
+        }
+        return (losers == players.length-1);
     }
 
     public String chance(Player player){
@@ -236,33 +242,51 @@ public class Monopoly {
                 return "Hai vinto 60 euro al centro scommesse";
             case 1:
                 if(player.payment(125)) {
-                    //boh da vedere
-                    setTaxFund(+125);
+                    taxFund += 125;
                     return "Hai parcheggiato in tripla fila paghi la multa di 125 euro";
                 }
-                else {return "Non hai i soldi";}
+                else {
+                    taxFund += player.getBill();
+                    return "Hai parcheggiato in tripla fila paghi la multa di 125 euro,\n" +
+                        "ma non puoi pagari, lasci il tuo conto nel fondocassa";
+                }
             case 2:
                 player.setPosition((short) 0);
                 passGo(player);
-                return "hai scordato il portafoglio, torna al via per riprenderlo";
+                return "Hai scordato il portafoglio, torna al via per riprenderlo";
             case 3:
                 goToPrison(player);
-                return "Ti hanno fermato in guida in un elevato stato di ebrezza, passi 3 turni in prigione";
+                return "Ti hanno fermato alla guida con un elevato stato di ebrezza, passi 3 turni in prigione";
             case 4:
                 player.movement(-3);
                 return "Un pedone ti punta il ferro, fai tre passi indietro";
             case 5:
-                player.payment(50);
-                return "Fai la spesa per un festino, spendi 50 euro";
+                if (player.payment(50)) {
+                    return "Fai la spesa per un festino, spendi 50 euro";
+                } else {
+                    taxFund += player.getBill();
+                    return "Fai la spesa per un festino, spendi 50 euro," +
+                            "ma vai in bancarotta perché è la sessantesima volta in un mese";
+                }
             case 6:
-                player.payment(40);
-                taxFund += 40;
-                return "40 euro di multa per aver guidato senza patente";
+                if (player.payment(40)) {
+                    taxFund += 40;
+                    return "40 euro di multa per aver guidato senza patente";
+                } else {
+                    taxFund += player.getBill();
+                    return "40 euro di multa per aver guidato senza patente" +
+                            " ma non puoi pagare, lasci tutti i tuoi beni nel fondocassa";
+                }
             case 7:
-                player.payment(375);
-                return "Ti rompono un vetro della macchina, devi ripararla, spendi 375 euro";
+                if(player.payment(375)) {
+                    return "Ti rompono un vetro della macchina, devi ripararla, spendi 375 euro";
+                } else {
+                    taxFund += player.getBill();
+                    return "Ti rompono un vetro della macchina, devi ripararla, spendi 375 euro" +
+                            " ma non puoi pagare, lasci tutti i tuoi beni nel fondocassa";
+                }
             case 8:
-                if (player.getPrisoner()){
+                if (player.isPrisoner()){
                     player.setPrisoner(false);
                     return "Hai snichato il gang esci di prigione";
                 }
@@ -280,15 +304,20 @@ public class Monopoly {
                 player.setPosition((short) 1);
                 return "Torni alla prima posizione";
             case 12:
-                player.payment(500);
-                taxFund += 500;
-                return "Paghi 500 euro di debiti alla banca";
+                if(player.payment(500)) {
+                    taxFund += 500;
+                    return "Paghi 500 euro di debiti alla banca";
+                } else {
+                    taxFund += player.getBill();
+                    return "Paghi 500 euro di debiti alla banca" +
+                            " ma non puoi pagare, lasci tutti i tuoi beni nel fondocassa";
+                }
             case 13:
                 if (player.getPosition()>25){
                     player.payment(-500);
                 }
                 player.setPosition((short) 25);
-                return "Vai fino alla stazione nord, se passate da via ritirate 500";
+                return "Vai fino alla stazione nord, se passate dal via ritirate 500";
             case 14:
                 if (player.getPosition()>11){
                     player.payment(-500);
@@ -303,13 +332,24 @@ public class Monopoly {
                 return "Il posteggiatore ti ferma, non hai monetine " +
                         "\nquindi cerchi parcheggio due caselle più avanti";
             case 17:
-                player.payment(60* countHousesAndHotels(player)[0] + 250* countHousesAndHotels(player)[1]);
-                return "Avete tutti i vostri stabili da riparare: " +
-                        "pagare 60 euro per ogni casa e 250 per ogni albergo.";
+                if(player.payment(60* countHousesAndHotels(player)[0] + 250* countHousesAndHotels(player)[1])) {
+                    return "Avete tutti i vostri stabili da riparare: " +
+                            "pagate 60 euro per ogni casa e 250 per ogni albergo.";
+                } else {
+                    taxFund += player.getBill();
+                    return "Avete tutti i vostri stabili da riparare: " +
+                            "pagate 60 euro per ogni casa e 250 per ogni albergo\n" +
+                            " ma non puoi pagare, lasci tutti i tuoi beni nel fondocassa";
+                }
             case 18:
-                player.payment(100* countHousesAndHotels(player)[0] + 250* countHousesAndHotels(player)[1]);
-                return "Dovete pagare un contributo di miglioriastradale per una gara di cavalli, " +
-                        "\n100 per ogni casa, 250 euro per ogni albergo che possedete";
+                if(player.payment(100* countHousesAndHotels(player)[0] + 250* countHousesAndHotels(player)[1])) {
+                    return "Dovete pagare un contributo di miglioria stradale per una gara di cavalli, " +
+                            "\n100 per ogni casa, 250 euro per ogni albergo che possedete";
+                } else {
+                    return "Dovete pagare un contributo di miglioria stradale per una gara di cavalli," +
+                            "\n100 per ogni casa, 250 euro per ogni albergo che possedete" +
+                            " ma non puoi pagare, lasci tutti i tuoi beni nel fondocassa";
+                }
         }
         return null;
     }
@@ -450,6 +490,7 @@ public class Monopoly {
         }
         return new short[]{playerHouses, playerHotels};
     }
+
 
     public String stringBoard(Player player) {
         String result = "";
