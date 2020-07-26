@@ -213,14 +213,14 @@ public class Monopoly {
         return comboColors;
     }
 
-    public boolean getWin(Player[] players){
-        short losers = 0;
-        for (Player p: players) {
-            if (p.isLoser()){
-                losers++;
+    public boolean isOnePlayerRemained(Player[] players){
+        short losersNumber = 0;
+        for (Player player: players) {
+            if (player.isLoser()){
+                losersNumber++;
             }
         }
-        return (losers == players.length-1);
+        return losersNumber == players.length-1;
     }
 
     public String chance(Player player){
@@ -491,6 +491,14 @@ public class Monopoly {
         return new short[]{playerHouses, playerHotels};
     }
 
+    public Player getWinner(Player[] players){
+        for (Player player: players) {
+            if (!player.isLoser()){
+                return player;
+            }
+        }
+        return null;
+    }
 
     public String stringBoard(Player player) {
         String result = "";

@@ -48,16 +48,22 @@ public class MainConsole {
 
         do {
             for (Player player : players) {
-                if(player.isLoser()){
-                    continue;
+
+                if(m.isOnePlayerRemained(players)){
+                    break;
                 }
                 short doubleDice = 0;
                 do {
+                    if(player.isLoser()){
+                        break;
+                    }
                     char choiceYesOrNot;
-                    System.out.println("E' il turno di " + player.getPawn() + ":\nLa tua posizione attuale è " + player.getPosition() + "\n");
+                    System.out.println("E' il turno di " + player.getPawn() + ":\nLa tua posizione attuale è " + player.getPosition());
+                    System.out.println(player.toString());
+                    System.out.println(m.stringBoard(player));
                     Thread.sleep(1000);
-                    int dice1 = 24;
-                    int dice2 = 6;
+                    int dice1 = m.rollDice();
+                    int dice2 = m.rollDice();
                     System.out.println("Tiri il dado!");
                     Thread.sleep(2000);
                     System.out.println("Sono usciti " + dice1 + " e " + dice2);
@@ -65,17 +71,18 @@ public class MainConsole {
                     if (dice1 == dice2) {
                         System.out.println("Hai fatto doppio!");
                         doubleDice++;
+                    } else {
+                        doubleDice = 0;
                     }
                     if (doubleDice == 3){
                         System.out.println("Hai fatto 3 doppi, vai in prigione");
                         player.setPrisoner(true);
                         break;
                     }
-                    System.out.println(player.toString());
-                    System.out.println(m.stringBoard(player));
                     if (!player.isPrisoner()) {
                         System.out.println("Ti muovi di " + (dice1 + dice2) + " caselle!\n");
                         player.movement((dice1 + dice2));
+                        System.out.println(m.stringBoard(player));
                         Box.Type type = m.field[player.getPosition()].getType();
                         System.out.println("Sei su " + m.field[player.getPosition()].getName());
                         switch (type) {
@@ -89,7 +96,7 @@ public class MainConsole {
                                 }
                                 //se la proprietà è libera
                                 else if (m.isPropertyFree(players, m.field[player.getPosition()].getName())) {
-                                    System.out.println("Questa proprietà è libera e costa " + m.field[player.getPosition()].getPrice());
+                                    System.out.println("Questa proprietà è libera e costa " + m.field[player.getPosition()].getPrice() + " euro");
                                     //controlla se hai i soldi, se non ce li hai imposta direttamente di andare all'asta
                                     if (player.getBill() < m.field[player.getPosition()].getPrice()) {
                                         System.out.println("Non hai i soldi per comprala");
@@ -116,6 +123,7 @@ public class MainConsole {
                                             }
                                             break;
                                         case 'n':
+                                            System.out.println("Va all'asta!");
                                             //arraylist di gente esclusa dall'asta
                                             ArrayList<Player> auctionPlayers = new ArrayList<>(Arrays.asList(players));
                                             auctionPlayers.remove(player);
@@ -133,8 +141,8 @@ public class MainConsole {
                                                             outOfAuctionPlayerNum++;
                                                         }
                                                     }
-
-                                                    if (auctionPlayer.getPawn() != Player.Pawn.NONE) {
+                                                    //System.out.println("giocatori usciti "+outOfAuctionPlayerNum);
+                                                    if (!auctionPlayer.isOutOfAuction()) {
 
                                                         int raise;
                                                         if ((auctionPlayers.size() - 1 == outOfAuctionPlayerNum) && auctionPlayer.getPawn() == lastAuctionPlayer) {
@@ -194,6 +202,7 @@ public class MainConsole {
                                                 m.setTaxFund(m.getTaxFund() + player.getBill());
                                                 System.out.println("ma non puoi pagare, " +
                                                         "lasci tutti i tuoi beni nel fondocassa");
+
                                             }
                                         } else if (type.equals(Box.Type.STATION)) {
                                             System.out.println("Devi pagare " + m.getStationTax(player.getProperties()) + " euri");
@@ -307,7 +316,11 @@ public class MainConsole {
                         }
                     }
                 }while (doubleDice != 0);
+                if(player.isLoser()){
+                    continue;
+                }
                 int secondChoice;
+
                 do {
                     System.out.println("Cosa vuoi fare?\n1) Costruisci\n2) Ipoteca una proprietà\n3) Ricompra una proprietà ipotecata\n4) Fine turno\n");
                     secondChoice = input.nextInt();
@@ -379,6 +392,7 @@ public class MainConsole {
                 }
 
             }
-        }while (!m.getWin(players));
+        }while (!m.isOnePlayerRemained(players));
+        System.out.println("\n\nHa vinto"+ m.getWinner(players).toString());
     }
 }

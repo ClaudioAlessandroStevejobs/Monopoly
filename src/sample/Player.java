@@ -119,6 +119,6 @@ public class Player {
 
     @Override
     public String toString() {
-        return "\nDati "+pawn +":\nPosizione: "+position+"\nConto: "+bill+"€"+"\nCaselle in tuo possesso:\n"+properties+"\n";
+        return "\n"+pawn +":\nPosizione: "+position+"\nConto: "+bill+"€"+"\nCaselle in tuo possesso:\n"+properties+"\n";
     }
 }
