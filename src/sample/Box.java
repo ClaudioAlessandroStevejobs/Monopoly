@@ -4,13 +4,13 @@ import java.util.function.BinaryOperator;
 
 public class Box {
     public enum Type{PROPERTY, PRISON, GO, GO_TO_PRISON, PARKING, CHANCE, TAX, SOCIETY, STATION}
-    public enum Color{RED, YELLOW, BLUE, LIGHT_BLUE, GREEN, ORANGE, PURPLE, BROWN}
+    public enum Color{RED, YELLOW, BLUE, LIGHT_BLUE, GREEN, ORANGE, PURPLE, BROWN, NONE}
     private int price;
     private int mortgageCost;
     private String name = "";
     private short houses;
     private Type type;
-    private Color color;
+    private Color color = Color.NONE;
     private boolean buildable;
     private boolean mortgaged;
 
@@ -66,6 +66,9 @@ public class Box {
         return type;
     }
     public boolean isBuildable() {return buildable;}
+    public void setHouses(short houses) {
+        this.houses = houses;
+    }
     public int getHouseCost() {
         if (color.equals(Color.BROWN) || color.equals(Color.LIGHT_BLUE)) {
             return 50;
@@ -84,15 +87,15 @@ public class Box {
     public int getPropertyTax() {
         switch (houses) {
             case 0:
-                return price/6;
-            case 1:
-                return price/4;
-            case 2:
                 return price/2;
+            case 1:
+                return (int) (price*1.5);
+            case 2:
+                return price*3;
             case 3:
-                return price+50;
+                return price*4;
             case 4:
-                return price+250;
+                return price*5;
         }
         return 0;
     }

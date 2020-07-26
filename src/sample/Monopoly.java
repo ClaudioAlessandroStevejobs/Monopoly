@@ -418,20 +418,21 @@ public class Monopoly {
 
     public Player setMortgageProperty (Player player, String propertyName) {
         for (Box box: field) {
-            if (box.getName()==propertyName) {
+            if (box.getName().equals(propertyName)) {
                 box.setMortgaged(true);
+                player.payment(-box.getMortgageCost());
             }
-            player.payment(-box.getMortgageCost());
+
         }
         return player;
     }
 
     public Player setActiveProperty (Player player, String propertyName) {
         for (Box box: field) {
-            if (box.getName()==propertyName) {
+            if (box.getName().equals(propertyName)) {
                 box.setMortgaged(false);
+                player.payment(box.getMortgageCost()+10);
             }
-            player.payment(box.getMortgageCost()+10);
         }
         return player;
     }
@@ -443,6 +444,15 @@ public class Monopoly {
             }
         }
         return null;
+    }
+
+    public int getPositionFromName(String s) {
+        for (int k = 0; k < field.length; k++) {
+            if (field[k].getName().equals(s)) {
+                return k;
+            }
+        }
+        return 0;
     }
 
     public int getStationTax(ArrayList<String> playerProperties){
