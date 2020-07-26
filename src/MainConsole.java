@@ -145,13 +145,45 @@ public class MainConsole {
                                                     if (!auctionPlayer.isOutOfAuction()) {
 
                                                         int raise;
-                                                        if ((auctionPlayers.size() - 1 == outOfAuctionPlayerNum) && auctionPlayer.getPawn() == lastAuctionPlayer) {
+                                                        if ((auctionPlayers.size() - 1 == outOfAuctionPlayerNum) && lastAuctionPlayer == null) {
+                                                            do {
+                                                                System.out.println("Gli altri giocatori non vogliono comprare questa proprietà,\n" +
+                                                                        auctionPlayer.getPawn() + " vuoi comprarla tu per " + price + " euri? (s/n)");
+                                                                choiceYesOrNot = input.next().charAt(0);
+                                                                if (choiceYesOrNot != 's' && choiceYesOrNot != 'n') {
+                                                                    System.out.println("Errore!");
+                                                                }
+                                                                if(choiceYesOrNot == 's' && auctionPlayer.getBill() < m.field[player.getPosition()].getPrice()){
+                                                                    System.out.println("Non hai i soldi per comprarla");
+                                                                    choiceYesOrNot = ' ';
+                                                                }
+                                                            } while (choiceYesOrNot != 's' && choiceYesOrNot != 'n');
+                                                            switch (choiceYesOrNot) {
+                                                                case 's':
+                                                                    auctionPlayer.payment(m.field[player.getPosition()].getPrice());
+                                                                    auctionPlayer.addProperty(m.field[player.getPosition()].getName());
+                                                                    if (type.equals(Box.Type.PROPERTY)) {
+                                                                        m.setBuildable(auctionPlayer.getProperties());
+                                                                    }
+                                                                    break;
+                                                                case 'n':
+                                                                    System.out.println(m.field[player.getPosition()].getName() + " è rimasta libera");
+                                                                    break;
+                                                            }
+                                                            auctionExit= true;
+                                                            break;
+                                                        }
+                                                        else if ((auctionPlayers.size() - 1 == outOfAuctionPlayerNum) && auctionPlayer.getPawn() == lastAuctionPlayer) {
                                                             auctionPlayer.payment(price);
                                                             auctionPlayer.addProperty(m.field[player.getPosition()].getName());
+                                                            if (type.equals(Box.Type.PROPERTY)) {
+                                                                m.setBuildable(auctionPlayer.getProperties());
+                                                            }
                                                             System.out.println(auctionPlayer.getPawn() + " si è aggiudicato " + m.field[player.getPosition()].getName() + " per " + price + " euro");
                                                             auctionExit = true;
                                                             break;
                                                         }
+
                                                         //controllo se puoi puntare già di base o no
                                                         if (!auctionPlayer.payment(m.field[player.getPosition()].getPrice())) {
                                                             auctionPlayer.payment(-m.field[player.getPosition()].getPrice());
