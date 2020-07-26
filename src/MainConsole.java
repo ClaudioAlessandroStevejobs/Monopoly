@@ -8,11 +8,8 @@ public class MainConsole {
     public static void main(String[] args) throws InterruptedException {
         Scanner input = new Scanner(System.in);
         Monopoly m = new Monopoly();
-
         System.out.println("MONOPOLY 2020 CATANIA EDITION");
-
-        int playerNum = 0;
-
+        int playerNum;
             do {
                 System.out.println("Quanti giocatori partecipano? (2-6)");
                 playerNum = input.nextInt();
@@ -40,8 +37,6 @@ public class MainConsole {
             players[k]= new Player(availablePawns.get(choice-1));
             System.out.println("Il giocatore "+(k+1)+" ha scelto "+availablePawns.get(choice-1)+"!\n");
             availablePawns.remove(choice-1);
-
-
         }
 
         //MESCOLAMENTO GIOCATORI f
